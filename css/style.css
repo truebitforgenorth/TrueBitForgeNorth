@@ -961,6 +961,26 @@ img {
   display: block;
 }
 
+.founder-logo-wrap {
+  padding: 2.5rem;
+  align-items: center;
+  background:
+    radial-gradient(circle at top, rgba(255, 122, 26, 0.16), transparent 50%),
+    radial-gradient(circle at bottom, rgba(47, 125, 79, 0.18), transparent 55%),
+    rgba(255, 255, 255, 0.03);
+}
+
+.founder-logo {
+  width: min(100%, 420px);
+  height: auto;
+  min-height: 0;
+  max-height: 540px;
+  object-fit: contain;
+  object-position: center;
+  margin: 0 auto;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.35));
+}
+
 .founder-content-wrap {
   height: 100%;
   padding: 3.5rem 3rem;
@@ -1002,6 +1022,14 @@ img {
     max-height: 520px;
   }
 
+  .founder-logo-wrap {
+    padding: 2rem;
+  }
+
+  .founder-logo {
+    max-height: 440px;
+  }
+
   .founder-content-wrap {
     padding: 2.5rem 2rem;
   }
@@ -1027,6 +1055,16 @@ img {
     min-height: 320px;
     max-height: 380px;
     object-position: center top;
+  }
+
+  .founder-logo-wrap {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .founder-logo {
+    min-height: 0;
+    max-height: 280px;
+    object-position: center;
   }
 
   .founder-content-wrap {
