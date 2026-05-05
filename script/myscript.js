@@ -136,6 +136,58 @@ if (contactForm && formMessage) {
 
   updateAuthUI();
 
+  // Mobile nav overlay
+  const mainNav = document.getElementById('mainNav');
+  const navToggle = document.querySelector('.mobile-menu-toggle');
+  const mobileNavQuery = window.matchMedia('(max-width: 991.98px)');
+
+  function syncMobileMenuState(forceClosed = false) {
+    const isOpen = !forceClosed && !!(mainNav && mobileNavQuery.matches && mainNav.classList.contains('show'));
+    document.body.classList.toggle('mobile-menu-open', isOpen);
+
+    if (navToggle) {
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+      navToggle.classList.toggle('collapsed', !isOpen);
+    }
+  }
+
+  function openMobileMenu() {
+    if (!mainNav || !mobileNavQuery.matches) return;
+    mainNav.classList.add('show');
+    syncMobileMenuState();
+  }
+
+  function closeMobileMenu() {
+    if (!mainNav) return;
+    mainNav.classList.remove('show');
+    syncMobileMenuState(true);
+  }
+
+  function toggleMobileMenu() {
+    if (!mainNav || !mobileNavQuery.matches) return;
+
+    if (mainNav.classList.contains('show')) closeMobileMenu();
+    else openMobileMenu();
+  }
+
+  if (navToggle) {
+    navToggle.addEventListener('click', () => {
+      toggleMobileMenu();
+    });
+  }
+
+  if (mobileNavQuery.addEventListener) {
+    mobileNavQuery.addEventListener('change', () => closeMobileMenu());
+  } else if (mobileNavQuery.addListener) {
+    mobileNavQuery.addListener(() => closeMobileMenu());
+  }
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && mainNav && mainNav.classList.contains('show')) {
+      closeMobileMenu();
+    }
+  });
+
   // Active nav links
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-link');
@@ -157,4 +209,22 @@ if (contactForm && formMessage) {
       }
     });
   });
+
+  navLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      if (mobileNavQuery.matches && mainNav && mainNav.classList.contains('show')) {
+        closeMobileMenu();
+      }
+    });
+  });
+
+  if (mainNav) {
+    mainNav.addEventListener('click', (event) => {
+      if (mobileNavQuery.matches && event.target === mainNav) {
+        closeMobileMenu();
+      }
+    });
+  }
+
+  syncMobileMenuState(true);
 });
