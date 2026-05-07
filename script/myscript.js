@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Reveal on scroll
   const revealItems = document.querySelectorAll('.reveal');
 
   if ('IntersectionObserver' in window) {
@@ -16,8 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     revealItems.forEach((item) => item.classList.add('show'));
   }
 
-  // Counters
   const counters = document.querySelectorAll('[data-counter]');
+
   if ('IntersectionObserver' in window) {
     const counterObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
@@ -35,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           if (current >= target) {
             clearInterval(timer);
+
             if (target === 100) el.textContent = '100%';
             else if (target === 24) el.textContent = '24/7';
             else if (target === 99) el.textContent = '99%';
@@ -49,47 +49,43 @@ document.addEventListener('DOMContentLoaded', () => {
     counters.forEach((counter) => counterObserver.observe(counter));
   }
 
-// -----------------------------
-// Contact form - working mailto version
-// -----------------------------
-const contactForm = document.getElementById('contactForm');
-const formMessage = document.getElementById('formMessage');
+  const contactForm = document.getElementById('contactForm');
+  const formMessage = document.getElementById('formMessage');
 
-if (contactForm && formMessage) {
-  contactForm.addEventListener('submit', async function (e) {
-    e.preventDefault();
+  if (contactForm && formMessage) {
+    contactForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
 
-    const formData = new FormData(contactForm);
+      const formData = new FormData(contactForm);
 
-    try {
-      const response = await fetch(contactForm.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          Accept: 'application/json'
+      try {
+        const response = await fetch(contactForm.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Accept: 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          formMessage.textContent = 'Inquiry sent successfully.';
+          formMessage.classList.remove('text-white-50', 'text-warning');
+          formMessage.classList.add('text-success');
+          contactForm.reset();
+        } else {
+          formMessage.textContent = 'Something went wrong. Please try again.';
+          formMessage.classList.remove('text-white-50', 'text-success');
+          formMessage.classList.add('text-warning');
         }
-      });
-
-      if (response.ok) {
-        formMessage.textContent = 'Inquiry sent successfully.';
-        formMessage.classList.remove('text-white-50', 'text-warning');
-        formMessage.classList.add('text-success');
-        contactForm.reset();
-      } else {
-        formMessage.textContent = 'Something went wrong. Please try again.';
+      } catch (error) {
+        formMessage.textContent = 'Connection error. Please try again.';
         formMessage.classList.remove('text-white-50', 'text-success');
         formMessage.classList.add('text-warning');
+        console.error(error);
       }
-    } catch (error) {
-      formMessage.textContent = 'Connection error. Please try again.';
-      formMessage.classList.remove('text-white-50', 'text-success');
-      formMessage.classList.add('text-warning');
-      console.error(error);
-    }
-  });
-}
+    });
+  }
 
-  // Auth UI
   const authStatus = document.getElementById('authStatus');
   const loginBtn = document.getElementById('loginBtn');
   const signupBtn = document.getElementById('signupBtn');
@@ -136,9 +132,9 @@ if (contactForm && formMessage) {
 
   updateAuthUI();
 
-  // Mobile nav overlay
   const mainNav = document.getElementById('mainNav');
   const navToggle = document.querySelector('.mobile-menu-toggle');
+  const navLinks = document.querySelectorAll('.nav-link');
   const mobileNavQuery = window.matchMedia('(max-width: 991.98px)');
 
   function syncMobileMenuState(forceClosed = false) {
@@ -188,28 +184,6 @@ if (contactForm && formMessage) {
     }
   });
 
-  // Active nav links
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
-
-  window.addEventListener('scroll', () => {
-    let current = '';
-
-    sections.forEach((section) => {
-      const sectionTop = section.offsetTop - 120;
-      if (window.scrollY >= sectionTop) {
-        current = section.getAttribute('id');
-      }
-    });
-
-    navLinks.forEach((link) => {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === `#${current}`) {
-        link.classList.add('active');
-      }
-    });
-  });
-
   navLinks.forEach((link) => {
     link.addEventListener('click', () => {
       if (mobileNavQuery.matches && mainNav && mainNav.classList.contains('show')) {
@@ -225,6 +199,40 @@ if (contactForm && formMessage) {
       }
     });
   }
+
+  const sectionNavLinks = Array.from(document.querySelectorAll('[data-section-link]'));
+  const quickLinksBar = document.querySelector('.quick-links-bar');
+  const trackedSections = sectionNavLinks
+    .map((link) => {
+      const target = document.querySelector(link.getAttribute('href'));
+      return target ? { link, section: target } : null;
+    })
+    .filter(Boolean);
+
+  function updateActiveSectionLink() {
+    if (!trackedSections.length) return;
+
+    let currentId = '';
+    const headerOffset =
+      (document.querySelector('.navbar')?.offsetHeight || 0) +
+      (quickLinksBar?.offsetHeight || 0) +
+      24;
+
+    trackedSections.forEach(({ section }) => {
+      const sectionTop = section.offsetTop - headerOffset;
+      if (window.scrollY >= sectionTop) {
+        currentId = section.id;
+      }
+    });
+
+    sectionNavLinks.forEach((link) => {
+      const href = link.getAttribute('href');
+      link.classList.toggle('active', href === `#${currentId}`);
+    });
+  }
+
+  updateActiveSectionLink();
+  window.addEventListener('scroll', updateActiveSectionLink);
 
   syncMobileMenuState(true);
 });

@@ -4,30 +4,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>TrueBit Forge North LLC | Web Design, Web Development & Digital Solutions</title>
+  <title>TrueBit Forge North LLC | Home, About, and Contact</title>
   <meta name="description"
-    content="TrueBit Forge North LLC is a Wisconsin-based web design and web development company building high-performance websites, custom web applications, and modern digital solutions for businesses ready to grow." />
+    content="TrueBit Forge North LLC builds strategic websites, web applications, and digital brands for businesses ready to grow with confidence." />
   <meta name="robots" content="index, follow" />
   <meta name="author" content="TrueBit Forge North LLC" />
   <meta name="theme-color" content="#0f0b1f" />
-
   <link rel="canonical" href="https://www.truebitforgenorth.com/" />
 
-  <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="TrueBit Forge North LLC | Web Design, Web Development & Digital Solutions" />
+  <meta property="og:title" content="TrueBit Forge North LLC | Home, About, and Contact" />
   <meta property="og:description"
-    content="Wisconsin-based web design and development for modern businesses. Custom websites, web apps, digital strategy, and high-performance online experiences." />
+    content="Strategic websites, branding, and custom digital systems built to help businesses earn trust and grow online." />
   <meta property="og:url" content="https://www.truebitforgenorth.com/" />
   <meta property="og:site_name" content="TrueBit Forge North LLC" />
   <meta property="og:image" content="https://www.truebitforgenorth.com/photos/TBFN2.png" />
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="TrueBit Forge North LLC | Web Design, Web Development & Digital Solutions" />
+  <meta name="twitter:title" content="TrueBit Forge North LLC | Home, About, and Contact" />
   <meta name="twitter:description"
-    content="Custom websites, web applications, and digital experiences built for performance, credibility, and growth." />
+    content="Web design, development, branding, and custom software solutions designed for business growth." />
   <meta name="twitter:image" content="https://www.truebitforgenorth.com/photos/TBFN2.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,11 +32,9 @@
     rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
   <link rel="icon" href="photos/TBFN2.png" type="image/x-icon">
   <link rel="stylesheet" href="css/style.css">
 
-  <!-- Structured Data: Business -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -49,45 +43,32 @@
     "url": "https://www.truebitforgenorth.com/",
     "logo": "https://www.truebitforgenorth.com/photos/TBFN2.png",
     "image": "https://www.truebitforgenorth.com/photos/TBFN2.png",
-    "description": "TrueBit Forge North LLC is a Wisconsin-based web design and web development company specializing in custom websites, web applications, and digital solutions for growing businesses.",
+    "description": "TrueBit Forge North LLC is a Wisconsin-based digital development company specializing in websites, branding, and custom software solutions.",
     "areaServed": {
       "@type": "Place",
       "name": "United States"
     },
     "address": {
       "@type": "PostalAddress",
-      "addressLocality": "Wisconsin & the Twin Cities area",
+      "addressLocality": "Wisconsin and the Twin Cities area",
       "addressRegion": "WI",
       "addressCountry": "US"
     },
     "serviceType": [
       "Web Design",
       "Web Development",
+      "Brand Identity Design",
       "Custom Web Applications",
-      "Digital Strategy",
-      "Responsive Website Development"
+      "Digital Strategy"
     ]
-  }
-  </script>
-
-  <!-- Structured Data: Website -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "TrueBit Forge North LLC",
-    "url": "https://www.truebitforgenorth.com/",
-    "description": "TrueBit Forge North LLC creates modern websites, web applications, and digital experiences for businesses."
   }
   </script>
 </head>
 
-<body>
-
-  <!-- NAVBAR -->
+<body data-page="home">
   <nav class="navbar navbar-expand-lg fixed-top">
-    <div class="container py-2">
-      <a class="navbar-brand d-flex align-items-center gap-3 text-white" href="#home"
+    <div class="container site-nav-row">
+      <a class="navbar-brand d-flex align-items-center gap-3 text-white" href="index.html#home"
         aria-label="TrueBit Forge North home">
         <span class="brand-badge">
           <img style="border-radius: 25%;" src="photos/TBFN2.png" alt="TrueBit Forge North LLC logo" class="navbar-logo">
@@ -108,50 +89,49 @@
       </button>
 
       <div class="collapse navbar-collapse mobile-nav-panel" id="mainNav">
-        <ul class="navbar-nav mx-auto mb-3 mb-lg-0 gap-lg-2">
-          <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-          <li class="nav-item"><a class="nav-link" href="#process">Process</a></li>
-          <li class="nav-item"><a class="nav-link" href="#work">Work</a></li>
-          <li class="nav-item"><a class="nav-link" href="#pricing">Pricing</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        <ul class="navbar-nav page-nav-list">
+          <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="portfolio.html">Portfolio</a></li>
         </ul>
-
-        <!-- Firebase auth area placeholder 
-        <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2">
-          <span id="authStatus" class="small text-white-50 me-lg-2">Guest Mode</span>
-          <button id="loginBtn" class="btn btn-outline-light-soft">Log In</button>
-          <button id="signupBtn" class="btn btn-brand">Get Started</button>
-          <button id="logoutBtn" class="btn btn-outline-light-soft d-none">Log Out</button>
-        </div>-->
       </div>
     </div>
   </nav>
 
+  <div class="quick-links-bar">
+    <div class="container">
+      <div class="quick-links-shell">
+        <div class="quick-links-inner">
+          <a class="quick-link" data-section-link href="#about">About</a>
+          <a class="quick-link" data-section-link href="#process">3DL Process</a>
+          <a class="quick-link" data-section-link href="#contact">Contact</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <main>
-    <!-- HERO -->
     <section class="hero" id="home">
       <div class="container">
         <div class="row align-items-center g-5">
           <div class="col-lg-7 hero-content">
             <div class="eyebrow reveal">
               <span class="live-dot"></span>
-              Professional Web Design • Web Development • Digital Strategy
+              Digital Development | Web Engineering | Branding
             </div>
 
             <h1 class="hero-title reveal">
-              We forge <span class="text-purple">high-impact</span> digital experiences for brands ready to grow.
+              We forge <span class="text-purple">high-impact</span> digital experiences for businesses ready to grow.
             </h1>
 
             <p class="hero-copy reveal">
-              TrueBit Forge North LLC is a Wisconsin web design and web development company creating modern websites,
-              custom web applications, and conversion-focused digital experiences that look exceptional, perform fast,
-              and help businesses build trust online.
+              TrueBit Forge North LLC creates websites, web applications, and brand systems that help businesses build
+              trust, generate leads, improve operations, and scale with confidence.
             </p>
 
             <div class="d-flex flex-wrap gap-3 mb-4 reveal">
               <a href="#contact" class="btn btn-brand btn-lg">Start Your Project</a>
-              <a href="#work" class="btn btn-outline-light-soft btn-lg">View Our Work</a>
+              <a href="services.html" class="btn btn-outline-light-soft btn-lg">Explore Services</a>
             </div>
 
             <div class="d-flex flex-wrap reveal">
@@ -176,7 +156,7 @@
                   <div class="hero-stat glass">
                     <div class="mini-label">Built For</div>
                     <div class="value">Growth</div>
-                    <div class="text-white-50 small">lead generation, authority, sales</div>
+                    <div class="text-white-50 small">authority, leads, and scale</div>
                   </div>
                 </div>
               </div>
@@ -184,15 +164,15 @@
               <div class="dashboard-card glass mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <div>
-                    <div class="mini-label">Project Command Center</div>
-                    <h2 class="mb-0 fw-bold h5">Client Dashboard Preview</h2>
+                    <div class="mini-label">Strategy Snapshot</div>
+                    <h2 class="mb-0 fw-bold h5">What We Build For</h2>
                   </div>
-                  <span class="project-badge">Live Build</span>
+                  <span class="project-badge">Business First</span>
                 </div>
 
                 <div class="mb-3">
                   <div class="d-flex justify-content-between small text-white-50 mb-2">
-                    <span>Design System</span>
+                    <span>Brand Credibility</span>
                     <span>92%</span>
                   </div>
                   <div class="metric-bar"><span style="width:92%"></span></div>
@@ -200,15 +180,15 @@
 
                 <div class="mb-3">
                   <div class="d-flex justify-content-between small text-white-50 mb-2">
-                    <span>Front-End Development</span>
-                    <span>84%</span>
+                    <span>Lead Conversion</span>
+                    <span>86%</span>
                   </div>
-                  <div class="metric-bar"><span style="width:84%"></span></div>
+                  <div class="metric-bar"><span style="width:86%"></span></div>
                 </div>
 
                 <div>
                   <div class="d-flex justify-content-between small text-white-50 mb-2">
-                    <span>SEO + Performance</span>
+                    <span>Long-Term Scalability</span>
                     <span>96%</span>
                   </div>
                   <div class="metric-bar"><span style="width:96%"></span></div>
@@ -216,14 +196,14 @@
               </div>
 
               <div class="dashboard-card glass">
-                <div class="mini-label mb-2">Tech Stack</div>
+                <div class="mini-label mb-2">Core Capabilities</div>
                 <div class="d-flex flex-wrap">
-                  <span class="ui-chip">Bootstrap</span>
-                  <span class="ui-chip">HTML/CSS</span>
-                  <span class="ui-chip">JavaScript</span>
-                  <span class="ui-chip">Firebase</span>
-                  <span class="ui-chip">Responsive UI</span>
-                  <span class="ui-chip">Custom Builds</span>
+                  <span class="ui-chip">Custom Websites</span>
+                  <span class="ui-chip">Brand Identity</span>
+                  <span class="ui-chip">Web Apps</span>
+                  <span class="ui-chip">Automation</span>
+                  <span class="ui-chip">SEO Foundations</span>
+                  <span class="ui-chip">Support Plans</span>
                 </div>
               </div>
             </div>
@@ -232,144 +212,138 @@
       </div>
     </section>
 
-    <!-- STATS -->
     <section class="pb-5" aria-label="Business value highlights">
       <div class="container">
         <div class="row g-4 text-center">
           <div class="col-md-4 reveal">
             <div class="glass dashboard-card">
               <div class="counter-number" data-counter="100">0</div>
-              <p class="mb-0">Custom strategy focused on brand authority, trust, and digital growth.</p>
+              <p class="mb-0">Strategy-led project thinking focused on trust, lead generation, and sustainable growth.</p>
             </div>
           </div>
           <div class="col-md-4 reveal">
             <div class="glass dashboard-card">
               <div class="counter-number" data-counter="24">0</div>
-              <p class="mb-0">Responsive design attention across desktop, tablet, and mobile experiences.</p>
+              <p class="mb-0">Responsive attention across desktop, tablet, and mobile so every experience feels polished.</p>
             </div>
           </div>
           <div class="col-md-4 reveal">
             <div class="glass dashboard-card">
               <div class="counter-number" data-counter="99">0</div>
-              <p class="mb-0">Performance-minded builds crafted to feel premium and professional.</p>
+              <p class="mb-0">Performance-minded builds crafted to feel premium, modern, and dependable.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SERVICES -->
-    <section class="section-padding" id="services">
+    <section class="section-padding pt-0" id="about">
+      <div class="container">
+        <div class="founder-wrapper glass reveal">
+          <div class="row g-0 align-items-stretch founder-row">
+            <div class="col-lg-5">
+              <div class="founder-photo-wrap founder-logo-wrap">
+                <img src="photos/TBFN2.png" alt="TrueBit Forge North LLC brand mark" class="founder-photo founder-logo">
+              </div>
+            </div>
+
+            <div class="col-lg-7">
+              <div class="founder-content-wrap">
+                <div class="eyebrow">About Us</div>
+                <h2 class="section-title mb-3">Built to help businesses show up strong online.</h2>
+                <p class="section-subtitle mb-4">
+                  Every project is shaped around the business behind it, not a one-size-fits-all template.
+                </p>
+
+                <div class="founder-content-inner">
+                  <p>
+                    TrueBit Forge North creates websites and digital experiences that feel intentional, credible, and
+                    built for real business growth. A strong online presence should do more than simply exist. It
+                    should communicate trust, reinforce your brand, and help move people toward action.
+                  </p>
+
+                  <p>
+                    Our focus is combining modern design, clean development, and practical strategy into work that
+                    looks polished and performs with purpose. Whether the project is a service business website, a
+                    branded platform, or a custom application, the goal stays the same: create something that works
+                    hard for the business behind it.
+                  </p>
+
+                  <div class="founder-highlights">
+                    <span class="ui-chip">Strategic Design</span>
+                    <span class="ui-chip">Custom Development</span>
+                    <span class="ui-chip">Business Focused</span>
+                    <span class="ui-chip">Premium UX</span>
+                  </div>
+
+                  <div class="mt-4 d-flex flex-wrap gap-3">
+                    <a href="services.html" class="btn btn-brand">View Services</a>
+                    <a href="portfolio.html" class="btn btn-outline-light-soft">See Portfolio</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-padding" aria-label="Service and portfolio previews">
       <div class="container">
         <div class="row justify-content-center text-center mb-5">
           <div class="col-lg-9">
-            <div class="eyebrow justify-content-center reveal">What We Do</div>
-            <h2 class="section-title reveal">Web design and development built for serious businesses.</h2>
+            <div class="eyebrow justify-content-center reveal">Explore The Site</div>
+            <h2 class="section-title reveal">A cleaner structure for how we work and what we build.</h2>
             <p class="section-subtitle mx-auto reveal">
-              From polished marketing websites to custom functionality and scalable web experiences, we build digital
-              platforms that help businesses look more credible, operate more efficiently, and convert more visitors.
+              The site is now organized so you can move straight to the information you need while keeping the same
+              unified visual language across every page.
             </p>
           </div>
         </div>
 
         <div class="row g-4">
-          <div class="col-lg-4 col-md-6 reveal">
+          <div class="col-lg-6 reveal">
             <div class="service-card glass">
-              <div class="icon-box"><i class="bi bi-palette2"></i></div>
-              <h3 class="fw-bold h4">Premium Web Design</h3>
-              <p>Strategic, modern, and visually strong designs that match your brand and instantly elevate your online
-                presence.</p>
+              <div class="icon-box"><i class="bi bi-grid-1x2"></i></div>
+              <h3 class="fw-bold h4">Services Page</h3>
+              <p>Browse the full service catalog, package tiers, hourly work, monthly support options, and pricing
+                starting points.</p>
               <ul class="service-list mt-4">
-                <li><i class="bi bi-check-circle-fill"></i><span>Custom page layouts and branding</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Conversion-focused user journeys</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Professional UI and visual hierarchy</span></li>
+                <li><i class="bi bi-check-circle-fill"></i><span>Website, branding, and software offers</span></li>
+                <li><i class="bi bi-check-circle-fill"></i><span>Grouped pricing with clear scope anchors</span></li>
+                <li><i class="bi bi-check-circle-fill"></i><span>The 3DL process and contact form included</span></li>
               </ul>
+              <a href="services.html" class="btn btn-outline-light-soft mt-4">Go to Services</a>
             </div>
           </div>
 
-          <div class="col-lg-4 col-md-6 reveal">
+          <div class="col-lg-6 reveal">
             <div class="service-card glass">
-              <div class="icon-box"><i class="bi bi-code-slash"></i></div>
-              <h3 class="fw-bold h4">Custom Development</h3>
-              <p>Clean, responsive development using modern front-end practices and scalable structure for future
-                growth.</p>
+              <div class="icon-box"><i class="bi bi-briefcase"></i></div>
+              <h3 class="fw-bold h4">Portfolio Page</h3>
+              <p>See featured projects, niche builds, interactive examples, and the kinds of outcomes our work is
+                built to support.</p>
               <ul class="service-list mt-4">
-                <li><i class="bi bi-check-circle-fill"></i><span>Bootstrap-based responsive builds</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Interactive sections and components</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Custom JavaScript functionality</span></li>
+                <li><i class="bi bi-check-circle-fill"></i><span>Featured live projects and supporting examples</span></li>
+                <li><i class="bi bi-check-circle-fill"></i><span>Interactive, accessibility, and business site work</span></li>
+                <li><i class="bi bi-check-circle-fill"></i><span>Shared contact section for quick next steps</span></li>
               </ul>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 reveal">
-            <div class="service-card glass">
-              <div class="icon-box"><i class="bi bi-phone"></i></div>
-              <h3 class="fw-bold h4">Mobile-First Experiences</h3>
-              <p>Every experience is designed to feel excellent across screens so your brand stays sharp wherever users
-                find you.</p>
-              <ul class="service-list mt-4">
-                <li><i class="bi bi-check-circle-fill"></i><span>Responsive layouts for all devices</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Touch-friendly navigation and UI</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Fast-loading optimized sections</span></li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 reveal">
-            <div class="service-card glass">
-              <div class="icon-box"><i class="bi bi-speedometer2"></i></div>
-              <h3 class="fw-bold h4">Performance Optimization</h3>
-              <p>We build with speed and structure in mind so your website feels smooth, modern, and trustworthy from
-                the first click.</p>
-              <ul class="service-list mt-4">
-                <li><i class="bi bi-check-circle-fill"></i><span>Optimized assets and layout flow</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Improved load speed perception</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Better user retention and engagement</span></li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 reveal">
-            <div class="service-card glass">
-              <div class="icon-box"><i class="bi bi-search-heart"></i></div>
-              <h3 class="fw-bold h4">SEO-Ready Foundations</h3>
-              <p>We create structured, content-friendly pages that support discoverability and make future SEO work much
-                stronger.</p>
-              <ul class="service-list mt-4">
-                <li><i class="bi bi-check-circle-fill"></i><span>Semantic structure and hierarchy</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Readable content sections</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Strong on-page formatting</span></li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 reveal">
-            <div class="service-card glass">
-              <div class="icon-box"><i class="bi bi-gear-wide-connected"></i></div>
-              <h3 class="fw-bold h4">Future-Ready Integrations</h3>
-              <p>This site is structured to support future tools like Firebase login, dashboards, forms, portals, and
-                client features.</p>
-              <ul class="service-list mt-4">
-                <li><i class="bi bi-check-circle-fill"></i><span>Firebase-ready auth navbar setup</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Scalable component architecture</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Space for admin or client tools</span></li>
-              </ul>
+              <a href="portfolio.html" class="btn btn-outline-light-soft mt-4">Go to Portfolio</a>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- PROCESS -->
     <section class="section-padding" id="process">
       <div class="container">
         <div class="row justify-content-center text-center mb-5">
           <div class="col-lg-9">
-            <div class="eyebrow justify-content-center reveal">Our Process</div>
-            <h2 class="section-title reveal">A clean process from strategy to launch.</h2>
+            <div class="eyebrow justify-content-center reveal">The 3DL Process</div>
+            <h2 class="section-title reveal">Discover. Design. Develop. Launch.</h2>
             <p class="section-subtitle mx-auto reveal">
-              Great websites are not thrown together. They are planned, designed, built, refined, and launched with
-              intention.
+              Our process keeps every project grounded in strategy, guided by strong design decisions, and built for
+              reliable real-world performance.
             </p>
           </div>
         </div>
@@ -378,486 +352,44 @@
           <div class="col-lg-3 col-md-6 reveal">
             <div class="process-card glass">
               <div class="mini-label mb-2">Step 01</div>
-              <h3 class="fw-bold h4">Discovery</h3>
-              <p>We define your goals, brand direction, audience, and business needs before a single section is built.
-              </p>
+              <h3 class="fw-bold h4">Discover</h3>
+              <p>We align on your goals, audience, offers, content needs, and long-term business priorities first.</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 reveal">
             <div class="process-card glass">
               <div class="mini-label mb-2">Step 02</div>
               <h3 class="fw-bold h4">Design</h3>
-              <p>We shape the visual identity, layout structure, content flow, and conversion strategy for the site.</p>
+              <p>We shape the layout, message flow, visual identity, and conversion path around your brand.</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 reveal">
             <div class="process-card glass">
               <div class="mini-label mb-2">Step 03</div>
-              <h3 class="fw-bold h4">Development</h3>
-              <p>We bring the design to life with responsive code, polished interactions, and clean front-end
-                architecture.</p>
+              <h3 class="fw-bold h4">Develop</h3>
+              <p>We build the experience with responsive code, polished interactions, and scalable technical structure.</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 reveal">
             <div class="process-card glass">
               <div class="mini-label mb-2">Step 04</div>
               <h3 class="fw-bold h4">Launch</h3>
-              <p>Once reviewed, refined, and tested, we launch a professional web experience ready for real-world
-                growth.</p>
+              <p>We test, refine, and ship a final experience that is ready to perform for your business.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-<!-- FEATURED WORK -->
-<section class="section-padding" id="work">
-  <div class="container">
-    <div class="row justify-content-center text-center mb-5">
-      <div class="col-lg-9">
-        <div class="eyebrow justify-content-center reveal">Featured Work</div>
-        <h2 class="section-title reveal">A growing portfolio of websites built for utility, engagement, and brand growth.</h2>
-        <p class="section-subtitle mx-auto reveal">
-          GoodFlightGolf leads the showcase, with additional site work below that highlights interactive tools, accessibility-minded builds, and focused niche experiences.
-        </p>
-      </div>
-    </div>
-
-    <div class="row g-4 align-items-stretch">
-      <div class="col-lg-7 reveal">
-        <div class="project-card glass featured-work-card h-100">
-          <div class="featured-work-header">
-            <div class="featured-work-logo-wrap">
-              <img src="photos/GFGlogo.png" alt="GoodFlightGolf logo" class="featured-work-logo">
-            </div>
-
-            <div class="featured-work-copy">
-              <span class="project-badge mb-3">Featured Project</span>
-                <a href="https://www.goodflightgolf.com">
-                  <h3 style="color: white; font-weight: 500;" class="fw-bold mb-3">GoodFlightGolf ⛳</h3>
-                </a>
-              <p class="mb-4">
-                GoodFlightGolf is a custom golf platform designed to give players more than a basic website experience.
-                It blends interactive tools, utility-based features, clean branding, and game-focused engagement into a platform built to keep users coming back.
-              </p>
-
-              <div class="d-flex flex-wrap">
-                <span class="ui-chip">Golf Games</span>
-                <span class="ui-chip">Handicap Tools</span>
-                <span class="ui-chip">Custom Calculators</span>
-                <span class="ui-chip">Interactive UX</span>
-                <span class="ui-chip">Mobile Friendly</span>
-                <span class="ui-chip">Brand Identity</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="featured-work-stats mt-4">
-            <div class="row g-3">
-              <div class="col-sm-4">
-                <div class="featured-mini-card glass">
-                  <div class="mini-label">Focus</div>
-                  <div class="fw-bold fs-5">Player Utility</div>
-                </div>
-              </div>
-              <div class="col-sm-4">
-                <div class="featured-mini-card glass">
-                  <div class="mini-label">Build Style</div>
-                  <div class="fw-bold fs-5">Interactive</div>
-                </div>
-              </div>
-              <div class="col-sm-4">
-                <div class="featured-mini-card glass">
-                  <div class="mini-label">Brand Feel</div>
-                  <div class="fw-bold fs-5">Modern</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-4">
-            <a href="https://www.goodflightgolf.com" class="btn btn-brand me-2" target="_blank" rel="noopener noreferrer">
-              Visit GoodFlightGolf
-            </a>
-            <a href="#contact" class="btn btn-outline-light-soft">
-              Build Something Like This
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-5 reveal">
-        <div class="project-image glass featured-work-panel">
-          <div class="project-window h-100">
-            <div class="window-topbar">
-              <span class="window-dot"></span>
-              <span class="window-dot"></span>
-              <span class="window-dot"></span>
-            </div>
-
-            <div class="window-body h-100 d-flex flex-column">
-              <div class="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                  <div class="mini-label">Project Snapshot</div>
-                  <h3 class="mb-0 fw-bold h5">GoodFlightGolf</h3>
-                </div>
-                <span class="ui-chip"><i class="bi bi-flag-fill"></i> Live</span>
-              </div>
-
-              <div class="featured-metric-block mb-4">
-                <div class="d-flex justify-content-between small text-white-50 mb-2">
-                  <span>User Engagement</span>
-                  <span>High</span>
-                </div>
-                <div class="metric-bar"><span style="width: 88%"></span></div>
-              </div>
-
-              <div class="featured-metric-block mb-4">
-                <div class="d-flex justify-content-between small text-white-50 mb-2">
-                  <span>Tool Depth</span>
-                  <span>Strong</span>
-                </div>
-                <div class="metric-bar"><span style="width: 92%"></span></div>
-              </div>
-
-              <div class="featured-metric-block mb-4">
-                <div class="d-flex justify-content-between small text-white-50 mb-2">
-                  <span>Brand Identity</span>
-                  <span>Distinct</span>
-                </div>
-                <div class="metric-bar"><span style="width: 90%"></span></div>
-              </div>
-
-              <div class="row g-3 mt-auto">
-                <div class="col-6">
-                  <div class="glass p-3 rounded-4 h-100">
-                    <div class="mini-label">Experience</div>
-                    <div class="fw-bold fs-5">Useful</div>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="glass p-3 rounded-4 h-100">
-                    <div class="mini-label">Design</div>
-                    <div class="fw-bold fs-5">Premium</div>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="glass p-3 rounded-4 h-100">
-                    <div class="mini-label">Audience</div>
-                    <div class="fw-bold fs-5">Golfers</div>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="glass p-3 rounded-4 h-100">
-                    <div class="mini-label">Build</div>
-                    <div class="fw-bold fs-5">Custom</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-   </div>
-
-    <div class="row justify-content-center text-center mt-5 mb-4">
-      <div class="col-lg-8 reveal">
-        <div class="eyebrow justify-content-center">More Site Work</div>
-        <h3 class="fw-bold text-white mb-3">Additional live examples from the portfolio.</h3>
-        <p class="text-white-50 mb-0">
-          These builds show a wider range of front-end work, from interactive tools and accessibility-first experiences
-          to niche content platforms designed around a specific audience.
-        </p>
-      </div>
-    </div>
-
-    <div class="row g-4 mt-1">
-      <div class="col-md-6 col-xl-3 reveal">
-        <div class="project-card glass h-100 d-flex flex-column">
-          <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
-            <span class="project-badge">Portfolio Piece</span>
-            <span class="mini-label mb-0">Interactive Financial Tool</span>
-          </div>
-
-          <a href="https://truebitforgenorth.github.io/debitFreedon/" target="_blank" rel="noopener noreferrer">
-            <h3 class="fw-bold mb-3 text-white">Debt Freedom Tools</h3>
-          </a>
-
-          <p class="mb-4 text-white-50">
-            Debt Freedom Tools is an interactive calculator-focused site built to make payoff planning feel clearer,
-            more visual, and easier to act on. It highlights practical JavaScript functionality paired with a clean,
-            straightforward user flow.
-          </p>
-
-          <div class="d-flex flex-wrap mb-4">
-            <span class="ui-chip">Interactive Calculators</span>
-            <span class="ui-chip">Financial UX</span>
-            <span class="ui-chip">JavaScript Logic</span>
-            <span class="ui-chip">Practical Utility</span>
-          </div>
-
-          <div class="mt-auto">
-            <a href="https://truebitforgenorth.github.io/debitFreedon/" class="btn btn-outline-light-soft" target="_blank" rel="noopener noreferrer">
-              Visit Debt Freedom Tools
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-xl-3 reveal">
-        <div class="project-card glass h-100 d-flex flex-column">
-          <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
-            <span class="project-badge">Portfolio Piece</span>
-            <span class="mini-label mb-0">Accessibility-Focused Web Experience</span>
-          </div>
-
-          <a href="https://truebitforgenorth.github.io/ReadToMeNow/" target="_blank" rel="noopener noreferrer">
-            <h3 class="fw-bold mb-3 text-white">Read Aloud App</h3>
-          </a>
-
-          <p class="mb-4 text-white-50">
-            Read Aloud App is a focused experience built around clarity, usability, and content accessibility. The
-            project emphasizes a clean interface, responsive presentation, and an audience-first approach that keeps
-            the experience simple across devices.
-          </p>
-
-          <div class="d-flex flex-wrap mb-4">
-            <span class="ui-chip">Accessible UX</span>
-            <span class="ui-chip">Responsive Layout</span>
-            <span class="ui-chip">Clean Interface</span>
-            <span class="ui-chip">Content Focused</span>
-          </div>
-
-          <div class="mt-auto">
-            <a href="https://truebitforgenorth.github.io/ReadToMeNow/" class="btn btn-outline-light-soft" target="_blank" rel="noopener noreferrer">
-              Visit Read Aloud App
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-xl-3 reveal">
-        <div class="project-card glass h-100 d-flex flex-column">
-          <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
-            <span class="project-badge">Portfolio Piece</span>
-            <span class="mini-label mb-0">Regional Entertainment Guide</span>
-          </div>
-
-          <a href="https://truebitforgenorth.github.io/Let-sGametheMidWest/" target="_blank" rel="noopener noreferrer">
-            <h3 class="fw-bold mb-3 text-white">Let's Game the Midwest</h3>
-          </a>
-
-          <p class="mb-4 text-white-50">
-            Let's Game the Midwest is a location-driven web experience that organizes gaming destinations, events, and
-            regional interest into a clear and engaging interface. It demonstrates structured content presentation,
-            responsive layout work, and niche-audience design.
-          </p>
-
-          <div class="d-flex flex-wrap mb-4">
-            <span class="ui-chip">Directory Style UX</span>
-            <span class="ui-chip">Responsive Layout</span>
-            <span class="ui-chip">Structured Content</span>
-            <span class="ui-chip">Niche Audience Design</span>
-          </div>
-
-          <div class="mt-auto">
-            <a href="https://truebitforgenorth.github.io/Let-sGametheMidWest/" class="btn btn-outline-light-soft" target="_blank" rel="noopener noreferrer">
-              Visit Let's Game the Midwest
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-xl-3 reveal">
-        <div class="project-card glass h-100 d-flex flex-column">
-          <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
-            <span class="project-badge">Portfolio Piece</span>
-            <span class="mini-label mb-0">Service Business Landing Page</span>
-          </div>
-
-          <a href="https://truebitforgenorth.github.io/qikfix/" target="_blank" rel="noopener noreferrer">
-            <h3 class="fw-bold mb-3 text-white">QikFix</h3>
-          </a>
-
-          <p class="mb-4 text-white-50">
-            QikFix adds another business-facing example to the portfolio, showing a focused service page built to
-            present an offer clearly, move visitors toward action, and keep the experience simple on every screen size.
-          </p>
-
-          <div class="d-flex flex-wrap mb-4">
-            <span class="ui-chip">Service Page UX</span>
-            <span class="ui-chip">Clear Messaging</span>
-            <span class="ui-chip">Responsive Layout</span>
-            <span class="ui-chip">Conversion Focused</span>
-          </div>
-
-          <div class="mt-auto">
-            <a href="https://truebitforgenorth.github.io/qikfix/" class="btn btn-outline-light-soft" target="_blank" rel="noopener noreferrer">
-              Visit QikFix
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT US -->
-<section class="section-padding founder-section" id="about">
-  <div class="container">
-    <div class="founder-wrapper glass reveal">
-      <div class="row g-0 align-items-stretch founder-row">
-        <div class="col-lg-5">
-          <div class="founder-photo-wrap founder-logo-wrap">
-            <img src="photos/TBFN2.png" alt="TrueBit Forge North LLC brand mark" class="founder-photo founder-logo">
-          </div>
-        </div>
-
-        <div class="col-lg-7">
-          <div class="founder-content-wrap">
-            <div class="eyebrow">About Us</div>
-            <h2 class="section-title mb-3">Built to Help Businesses Show Up Strong Online</h2>
-            <p class="section-subtitle mb-4">
-              TrueBit Forge North LLC
-            </p>
-
-            <div class="founder-content-inner">
-              <p>
-                TrueBit Forge North creates websites and digital experiences that feel intentional, credible, and built for real business growth. A strong online presence should do more than simply exist. It should communicate trust, reinforce your brand, and help move people toward action.
-              </p>
-
-              <p>
-                Our focus is combining modern design, clean development, and practical strategy into sites that look polished and perform with purpose. Whether the project is a service business website, a branded platform, or a more custom build, the goal is always the same: create something that feels premium and works hard for the business behind it.
-              </p>
-
-              <div class="founder-highlights">
-                <span class="ui-chip">Strategic Design</span>
-                <span class="ui-chip">Custom Development</span>
-                <span class="ui-chip">Business Focused</span>
-                <span class="ui-chip">Premium UX</span>
-              </div>
-
-              <div class="mt-4 d-flex flex-wrap gap-3">
-                <a href="#contact" class="btn btn-brand">Work With Us</a>
-                <a href="#services" class="btn btn-outline-light-soft">Explore Services</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-    <!-- TESTIMONIAL STYLE SECTION -->
-    <section class="pb-5">
-      <div class="container">
-        <div class="row g-4">
-          <div class="col-lg-4 reveal">
-            <div class="testimonial-card glass">
-              <div class="mini-label mb-2">Brand Impact</div>
-              <h3 class="fw-bold h5">Designed to establish credibility</h3>
-              <p class="mb-0">A premium web presence helps potential clients trust your business faster and view your
-                brand as more established.</p>
-            </div>
-          </div>
-          <div class="col-lg-4 reveal">
-            <div class="testimonial-card glass">
-              <div class="mini-label mb-2">Lead Quality</div>
-              <h3 class="fw-bold h5">Built for better inquiries</h3>
-              <p class="mb-0">Clear calls to action, structured messaging, and strong design help attract more serious
-                potential customers.</p>
-            </div>
-          </div>
-          <div class="col-lg-4 reveal">
-            <div class="testimonial-card glass">
-              <div class="mini-label mb-2">Scalability</div>
-              <h3 class="fw-bold h5">Structured for future growth</h3>
-              <p class="mb-0">The foundation can expand into client dashboards, admin tools, authentication,
-                calculators, and more.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PRICING -->
-    <section class="section-padding" id="pricing">
-      <div class="container">
-        <div class="row justify-content-center text-center mb-5">
-          <div class="col-lg-8">
-            <div class="eyebrow justify-content-center reveal">Packages</div>
-            <h2 class="section-title reveal">Flexible starting points for different business needs.</h2>
-            <p class="section-subtitle mx-auto reveal">
-              Use these as polished starter packages. You can change pricing, deliverables, and service levels later.
-            </p>
-          </div>
-        </div>
-
-        <div class="row g-4 align-items-stretch">
-          <div class="col-lg-4 reveal">
-            <div class="pricing-card glass">
-              <div class="mini-label">Starter Site</div>
-              <div class="price">$299</div>
-              <p>For small businesses needing a clean, professional online presence that looks credible and modern.</p>
-              <ul class="pricing-list my-4">
-                <li><i class="bi bi-check-circle-fill"></i><span>1-3 custom pages</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Responsive Bootstrap layout</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Contact section or form</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>SEO-ready structure</span></li>
-              </ul>
-              <a href="#contact" class="btn btn-outline-light-soft w-100">Choose Starter</a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 reveal">
-            <div class="pricing-card glass featured">
-              <span class="featured-ribbon">Most Popular</span>
-              <div class="mini-label">Growth Site</div>
-              <div class="price">$999</div>
-              <p>For brands that want stronger visuals, better messaging, and a more custom feel for lead generation.
-              </p>
-              <ul class="pricing-list my-4">
-                <li><i class="bi bi-check-circle-fill"></i><span>Multi-section professional homepage</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Up to 5 custom pages</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Interactive design elements</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Brand-focused UI system</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Future integration ready</span></li>
-              </ul>
-              <a href="#contact" class="btn btn-brand w-100">Choose Growth</a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 reveal">
-            <div class="pricing-card glass">
-              <div class="mini-label">Custom Build</div>
-              <div class="price">Quote <small>Only</small></div>
-              <p>For companies needing advanced sections, custom functionality, dashboards, portals, or application
-                features.</p>
-              <ul class="pricing-list my-4">
-                <li><i class="bi bi-check-circle-fill"></i><span>Custom architecture planning</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Advanced front-end functionality</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Firebase-ready integrations</span></li>
-                <li><i class="bi bi-check-circle-fill"></i><span>Scalable design systems</span></li>
-              </ul>
-              <a href="#contact" class="btn btn-outline-light-soft w-100">Request Quote</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA -->
     <section class="pb-5">
       <div class="container">
         <div class="cta-box glass reveal">
           <div class="row align-items-center g-4">
             <div class="col-lg-8">
-              <div class="eyebrow">Let’s Build Something Strong</div>
+              <div class="eyebrow">Build Beyond Basic</div>
               <h2 class="section-title mb-3">Your website should feel like an asset, not just a page online.</h2>
               <p class="section-subtitle mb-0">
-                TrueBit Forge North LLC helps businesses create digital experiences that look premium, communicate
-                clearly, and support long-term growth.
+                We build digital experiences that look premium, communicate clearly, and support long-term growth.
               </p>
             </div>
             <div class="col-lg-4 text-lg-end">
@@ -868,94 +400,94 @@
       </div>
     </section>
 
-<!-- CONTACT -->
-<section class="section-padding" id="contact">
-  <div class="container">
-    <div class="row g-4 align-items-stretch">
-      <div class="col-lg-5 reveal">
-        <div class="contact-card glass h-100">
-          <div class="eyebrow">Contact Us</div>
-          <h2 class="section-title mb-3">Let’s talk about your next project.</h2>
-          <p class="mb-4">
-            Tell us what you are building, what your business needs, and what kind of digital presence you want to
-            create.
-          </p>
-          <ul class="contact-list">
-            <li><i class="bi bi-building"></i><span><strong>Business:</strong> TrueBit Forge North LLC</span></li>
-            <li><i class="bi bi-globe2"></i><span><strong>Services:</strong> Web Design, Web Development, Digital
-                Experience Builds</span></li>
-            <li><i class="bi bi-stars"></i><span><strong>Focus:</strong> Professional, high-conversion, modern
-                business websites</span></li>
-              <li><i class="bi bi-geo-alt"></i><span><strong>Location:</strong> Wisconsin &amp; the Twin Cities area</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col-lg-7 reveal">
-        <div class="contact-card glass h-100">
-          <form id="contactForm" class="row g-3" action="https://formspree.io/f/mreoknyz" method="POST">
-            <div class="row g-3">
-              <div class="col-md-6">
-                <label class="form-label text-white-50" for="fullName">Full Name</label>
-                <input id="fullName" name="fullName" type="text" class="form-control" placeholder="Your name" required>
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label text-white-50" for="emailAddress">Email Address</label>
-                <input id="emailAddress" name="emailAddress" type="email" class="form-control" placeholder="you@example.com" required>
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label text-white-50" for="businessName">Business Name</label>
-                <input id="businessName" name="businessName" type="text" class="form-control" placeholder="Your business">
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label text-white-50" for="projectType">Project Type</label>
-                <select id="projectType" name="projectType" class="form-select">
-                  <option selected>Choose one</option>
-                  <option>Business Website</option>
-                  <option>Landing Page</option>
-                  <option>Website Redesign</option>
-                  <option>Custom Web App</option>
-                  <option>Other</option>
-                </select>
-              </div>
-
-              <div class="col-12">
-                <label class="form-label text-white-50" for="projectDetails">Project Details</label>
-                <textarea id="projectDetails" name="projectDetails" class="form-control" rows="6"
-                  placeholder="Tell us about your goals, style, features, and timeline." required></textarea>
-              </div>
-
-              <div class="col-12 d-flex flex-column flex-md-row gap-3 align-items-md-center justify-content-between mt-2">
-                <p id="formMessage" class="small text-white-50 mb-0">
-                  Fill out the form and send your inquiry.
-                </p>
-                <button type="submit" class="btn btn-brand">Send Inquiry</button>
-              </div>
+    <section class="section-padding" id="contact">
+      <div class="container">
+        <div class="row g-4 align-items-stretch">
+          <div class="col-lg-5 reveal">
+            <div class="contact-card glass h-100">
+              <div class="eyebrow">Contact Us</div>
+              <h2 class="section-title mb-3">Let's talk about your next project.</h2>
+              <p class="mb-4">
+                Tell us what you are building, what your business needs, and what kind of digital presence you want to create.
+              </p>
+              <ul class="contact-list">
+                <li><i class="bi bi-building"></i><span><strong>Business:</strong> TrueBit Forge North LLC</span></li>
+                <li><i class="bi bi-globe2"></i><span><strong>Services:</strong> Web design, development, branding, e-commerce, and custom software</span></li>
+                <li><i class="bi bi-stars"></i><span><strong>Focus:</strong> Strategic digital systems built for trust, leads, and long-term growth</span></li>
+                <li><i class="bi bi-geo-alt"></i><span><strong>Location:</strong> Wisconsin and the Twin Cities area</span></li>
+              </ul>
             </div>
-          </form>
+          </div>
+
+          <div class="col-lg-7 reveal">
+            <div class="contact-card glass h-100">
+              <form id="contactForm" class="row g-3" action="https://formspree.io/f/mreoknyz" method="POST">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label text-white-50" for="fullName">Full Name</label>
+                    <input id="fullName" name="fullName" type="text" class="form-control" placeholder="Your name" required>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label text-white-50" for="emailAddress">Email Address</label>
+                    <input id="emailAddress" name="emailAddress" type="email" class="form-control" placeholder="you@example.com" required>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label text-white-50" for="businessName">Business Name</label>
+                    <input id="businessName" name="businessName" type="text" class="form-control" placeholder="Your business">
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label text-white-50" for="projectType">Project Type</label>
+                    <select id="projectType" name="projectType" class="form-select">
+                      <option selected>Choose one</option>
+                      <option>Landing Page</option>
+                      <option>Business Website</option>
+                      <option>Growth Website</option>
+                      <option>Premium Custom Development</option>
+                      <option>Custom Web App</option>
+                      <option>E-Commerce Store</option>
+                      <option>Branding / Logo Design</option>
+                      <option>SEO or Website Optimization</option>
+                      <option>Monthly Support Plan</option>
+                      <option>Other</option>
+                    </select>
+                  </div>
+
+                  <div class="col-12">
+                    <label class="form-label text-white-50" for="projectDetails">Project Details</label>
+                    <textarea id="projectDetails" name="projectDetails" class="form-control" rows="6"
+                      placeholder="Tell us about your goals, style, features, and timeline." required></textarea>
+                  </div>
+
+                  <div class="col-12 d-flex flex-column flex-md-row gap-3 align-items-md-center justify-content-between mt-2">
+                    <p id="formMessage" class="small text-white-50 mb-0">
+                      Fill out the form and send your inquiry.
+                    </p>
+                    <button type="submit" class="btn btn-brand">Send Inquiry</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
   </main>
 
-  <!-- FOOTER -->
   <footer class="py-4">
     <div class="container">
       <div class="row g-3 align-items-center">
         <div class="col-lg-6 text-center text-lg-start">
-          <p class="mb-0 text-white-50">© 2026 TrueBit Forge North LLC. All rights reserved. Wisconsin &amp; the Twin Cities area.</p>
+          <p class="mb-0 text-white-50">© 2026 TrueBit Forge North LLC. All rights reserved. Wisconsin and the Twin Cities area.</p>
         </div>
         <div class="col-lg-6 text-center text-lg-end">
           <div class="d-flex flex-wrap justify-content-center justify-content-lg-end gap-3">
-            <a href="#services" class="footer-link">Services</a>
-            <a href="#work" class="footer-link">Work</a>
-            <a href="#pricing" class="footer-link">Pricing</a>
-            <a href="#contact" class="footer-link">Contact</a>
+            <a href="index.html" class="footer-link">Home</a>
+            <a href="services.html" class="footer-link">Services</a>
+            <a href="portfolio.html" class="footer-link">Portfolio</a>
+            <a href="index.html#contact" class="footer-link">Contact</a>
           </div>
         </div>
       </div>
@@ -965,7 +497,5 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script/myscript.js"></script>
 </body>
-
-<!--made so you can't sue-->
 
 </html>
