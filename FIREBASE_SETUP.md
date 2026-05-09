@@ -42,9 +42,16 @@ Recommended invoice fields:
   "issuedAt": "2026-05-09T00:00:00.000Z",
   "dueDate": "2026-05-23T00:00:00.000Z",
   "notes": "Payable within 14 days.",
-  "fileUrl": "https://your-domain.com/invoices/inv-2026-001.pdf"
+  "pdfUrl": "https://your-domain.com/invoices/inv-2026-001.pdf",
+  "excelUrl": "https://your-domain.com/invoices/inv-2026-001.xlsx"
 }
 ```
+
+If you only have one file, you can still use:
+
+- `pdfUrl` for a PDF invoice
+- `excelUrl` for an Excel invoice
+- `fileUrl` as a fallback generic link
 
 ## 5. How to post invoices for a client
 

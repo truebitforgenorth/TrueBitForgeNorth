@@ -199,9 +199,29 @@ function renderInvoices(invoices) {
       const notes = invoice.notes
         ? `<p class="invoice-notes mb-0">${escapeHtml(invoice.notes)}</p>`
         : '';
-      const downloadLink = invoice.fileUrl
-        ? `<a class="btn btn-outline-light-soft btn-sm" href="${escapeHtml(invoice.fileUrl)}" target="_blank" rel="noopener noreferrer">Open Invoice File</a>`
-        : '';
+      const actionLinks = [];
+
+      if (invoice.pdfUrl) {
+        const safePdfUrl = escapeHtml(invoice.pdfUrl);
+        actionLinks.push(
+          `<a class="btn btn-outline-light-soft btn-sm" href="${safePdfUrl}" target="_blank" rel="noopener noreferrer">View PDF</a>`
+        );
+        actionLinks.push(
+          `<a class="btn btn-brand btn-sm" href="${safePdfUrl}" download>Download PDF</a>`
+        );
+      }
+
+      if (invoice.excelUrl) {
+        actionLinks.push(
+          `<a class="btn btn-outline-light-soft btn-sm" href="${escapeHtml(invoice.excelUrl)}" target="_blank" rel="noopener noreferrer">Download Excel</a>`
+        );
+      }
+
+      if (!actionLinks.length && invoice.fileUrl) {
+        actionLinks.push(
+          `<a class="btn btn-outline-light-soft btn-sm" href="${escapeHtml(invoice.fileUrl)}" target="_blank" rel="noopener noreferrer">Open Invoice File</a>`
+        );
+      }
 
       return `
         <article class="invoice-card glass">
@@ -235,7 +255,7 @@ function renderInvoices(invoices) {
           ${notes}
 
           <div class="invoice-card-actions">
-            ${downloadLink}
+            ${actionLinks.join('')}
           </div>
         </article>
       `;
