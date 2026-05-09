@@ -716,6 +716,13 @@ body[data-page="services"] section[id] {
   margin-top: 0.35rem;
 }
 
+.price.price-placeholder,
+.compact-price.compact-price-placeholder {
+  min-height: 2.1rem;
+  color: transparent;
+  user-select: none;
+}
+
 .compact-note {
   color: var(--brand-muted);
   font-size: 0.95rem;
