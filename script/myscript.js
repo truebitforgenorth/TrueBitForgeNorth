@@ -86,52 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  const authStatus = document.getElementById('authStatus');
-  const loginBtn = document.getElementById('loginBtn');
-  const signupBtn = document.getElementById('signupBtn');
-  const logoutBtn = document.getElementById('logoutBtn');
-
-  let demoLoggedIn = false;
-
-  function updateAuthUI() {
-    if (!authStatus || !loginBtn || !signupBtn || !logoutBtn) return;
-
-    if (demoLoggedIn) {
-      authStatus.textContent = 'Signed in as demo@truebitforge.com';
-      loginBtn.classList.add('d-none');
-      signupBtn.classList.add('d-none');
-      logoutBtn.classList.remove('d-none');
-    } else {
-      authStatus.textContent = 'Guest Mode';
-      loginBtn.classList.remove('d-none');
-      signupBtn.classList.remove('d-none');
-      logoutBtn.classList.add('d-none');
-    }
-  }
-
-  if (loginBtn) {
-    loginBtn.addEventListener('click', () => {
-      demoLoggedIn = true;
-      updateAuthUI();
-    });
-  }
-
-  if (signupBtn) {
-    signupBtn.addEventListener('click', () => {
-      demoLoggedIn = true;
-      updateAuthUI();
-    });
-  }
-
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-      demoLoggedIn = false;
-      updateAuthUI();
-    });
-  }
-
-  updateAuthUI();
-
   const mainNav = document.getElementById('mainNav');
   const navToggle = document.querySelector('.mobile-menu-toggle');
   const navLinks = document.querySelectorAll('.nav-link');

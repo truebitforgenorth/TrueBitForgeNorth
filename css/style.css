@@ -1603,3 +1603,221 @@ img {
     font-size: 1rem;
   }
 }
+
+/* =========================================
+   Client Portal
+========================================= */
+.portal-tab-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.portal-tab {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--brand-text);
+  border-radius: 999px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.85rem 1rem;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.portal-tab:hover,
+.portal-tab.active {
+  background: linear-gradient(135deg, rgba(255, 122, 26, 0.26), rgba(255, 159, 63, 0.12));
+  border-color: rgba(255, 159, 63, 0.52);
+  transform: translateY(-1px);
+}
+
+.portal-alert {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  border-radius: var(--radius-md);
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.portal-alert-info {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.portal-alert-success {
+  background: rgba(47, 125, 79, 0.18);
+  border-color: rgba(47, 125, 79, 0.34);
+}
+
+.portal-alert-warning {
+  background: rgba(255, 122, 26, 0.14);
+  border-color: rgba(255, 159, 63, 0.36);
+}
+
+.portal-info-panel {
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.2rem;
+}
+
+.portal-dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.portal-client-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.portal-updated-at {
+  color: var(--brand-muted);
+  text-align: right;
+}
+
+.portal-summary-row {
+  margin-bottom: 1.5rem;
+}
+
+.portal-stat-number {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 900;
+  line-height: 1;
+  margin: 0.35rem 0 0.55rem;
+}
+
+.portal-stat-currency {
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
+}
+
+.portal-invoice-stack {
+  display: grid;
+  gap: 1rem;
+}
+
+.invoice-card {
+  border-radius: var(--radius-lg);
+  padding: 1.35rem;
+}
+
+.invoice-card-empty {
+  min-height: 220px;
+  place-items: center;
+}
+
+.invoice-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.invoice-id {
+  color: var(--brand-muted);
+  font-size: 0.95rem;
+}
+
+.invoice-amount-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.7rem;
+}
+
+.invoice-amount {
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.invoice-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.45rem 0.8rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.invoice-status.is-open {
+  background: rgba(255, 122, 26, 0.14);
+  border-color: rgba(255, 159, 63, 0.32);
+}
+
+.invoice-status.is-paid {
+  background: rgba(47, 125, 79, 0.18);
+  border-color: rgba(47, 125, 79, 0.36);
+}
+
+.invoice-status.is-overdue {
+  background: rgba(181, 52, 72, 0.18);
+  border-color: rgba(181, 52, 72, 0.34);
+}
+
+.invoice-status.is-draft {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.invoice-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.invoice-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.invoice-notes {
+  color: var(--brand-muted);
+  line-height: 1.7;
+}
+
+.invoice-card-actions {
+  margin-top: 1rem;
+}
+
+@media (max-width: 991.98px) {
+  .portal-dashboard-header,
+  .portal-client-bar,
+  .invoice-card-top {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .portal-updated-at,
+  .invoice-amount-wrap {
+    text-align: left;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .invoice-meta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-tab-row {
+    grid-template-columns: 1fr;
+  }
+}

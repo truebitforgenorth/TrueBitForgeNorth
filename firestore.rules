@@ -1,0 +1,24 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isClientOwner(userId) {
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    match /clients/{userId} {
+      allow create: if isClientOwner(userId);
+      allow read: if isClientOwner(userId);
+      allow update: if isClientOwner(userId);
+      allow delete: if false;
+
+      match /invoices/{invoiceId} {
+        allow read: if isClientOwner(userId);
+        allow write: if false;
+      }
+    }
+  }
+}
