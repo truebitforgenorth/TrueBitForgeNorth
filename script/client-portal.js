@@ -42,6 +42,8 @@ const setupNotice = document.getElementById('setupNotice');
 const authPanel = document.getElementById('authPanel');
 const signedOutPanel = document.getElementById('signedOutPanel');
 const portalDashboard = document.getElementById('portalDashboard');
+const authOnlyElements = Array.from(document.querySelectorAll('[data-portal-auth-only]'));
+const signedOutOnlyElements = Array.from(document.querySelectorAll('[data-portal-signed-out-only]'));
 const authTabs = Array.from(document.querySelectorAll('[data-auth-tab]'));
 const authForms = Array.from(document.querySelectorAll('[data-auth-form]'));
 const authHeadline = document.getElementById('authHeadline');
@@ -134,6 +136,19 @@ function clearBookingMessage() {
   bookingMessageText.textContent = '';
 }
 
+function setPortalActionState(state) {
+  const showAuthOnly = state === 'signed-in';
+  const showSignedOutOnly = state === 'signed-out';
+
+  authOnlyElements.forEach((element) => {
+    element.hidden = !showAuthOnly;
+  });
+
+  signedOutOnlyElements.forEach((element) => {
+    element.hidden = !showSignedOutOnly;
+  });
+}
+
 function setButtonsDisabled(form, disabled) {
   if (!form) return;
   form.querySelectorAll('button, select, textarea, input').forEach((field) => {
@@ -197,7 +212,7 @@ function renderEmptyInvoices() {
         <div class="mini-label mb-2">No invoices yet</div>
         <h3 class="fw-bold h4 mb-3">Your portal is ready.</h3>
         <p class="mb-0 text-white-50">
-          Once an invoice is added to your Firebase record, it will appear here automatically after you log in.
+          When a new invoice is posted to your account, it will appear here automatically after you log in.
         </p>
       </div>
     </article>
@@ -670,8 +685,7 @@ function showSignedOut() {
   renderedClientSlots = [];
   selectedClientSlotId = '';
 
-  signedOutPanel?.removeAttribute('hidden');
-  authPanel?.removeAttribute('hidden');
+  setPortalActionState('signed-out');
   portalDashboard?.setAttribute('hidden', '');
   logoutBtn?.setAttribute('hidden', '');
   renderEmptyInvoices();
@@ -681,8 +695,7 @@ function showSignedOut() {
 
 function showSignedIn(user) {
   currentUser = user;
-  signedOutPanel?.setAttribute('hidden', '');
-  authPanel?.removeAttribute('hidden');
+  setPortalActionState('signed-in');
   portalDashboard?.removeAttribute('hidden');
   logoutBtn?.removeAttribute('hidden');
 
@@ -749,13 +762,13 @@ async function handleSignupSubmit(event) {
     }
 
     setPortalMessage(
-      'Account created. The new client can now log in, book meetings, and see invoices posted to their record.',
+      'Account created. You can now log in, book meetings, and review invoices from your dashboard.',
       'success'
     );
     form.reset();
   } catch (error) {
     console.error(error);
-    setPortalMessage('Sign-up failed. Firebase may already have this email, or the password may be too weak.', 'warning');
+    setPortalMessage('Sign-up failed. Please double-check your information and try again.', 'warning');
   } finally {
     setButtonsDisabled(form, false);
   }
@@ -1002,6 +1015,7 @@ function initializePortal() {
   showSignedOut();
 
   if (!hasRealFirebaseConfig(firebaseConfig)) {
+    setPortalActionState('unavailable');
     setupNotice?.removeAttribute('hidden');
     authPanel?.setAttribute('hidden', '');
     signedOutPanel?.setAttribute('hidden', '');
@@ -1010,7 +1024,7 @@ function initializePortal() {
     renderEmptyInvoices();
     renderEmptyBookings();
     if (invoiceUpdatedAt) {
-      invoiceUpdatedAt.textContent = 'Firebase setup required before clients can log in.';
+      invoiceUpdatedAt.textContent = 'Client access is temporarily unavailable.';
     }
     return;
   }

@@ -348,7 +348,7 @@ async function initializeConsultationBooking() {
 
   if (!hasRealFirebaseConfig(firebaseConfig)) {
     consultationForm.setAttribute('hidden', '');
-    setConsultationMessage('Firebase booking setup is still incomplete for consultations.', 'warning');
+    setConsultationMessage('Consultation booking is temporarily unavailable. Please use the contact form for now.', 'warning');
     return;
   }
 

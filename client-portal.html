@@ -68,18 +68,18 @@
             <h1 class="hero-title reveal">Existing client login for meetings, invoices, and account access.</h1>
 
             <p class="hero-copy wide-copy reveal">
-              This portal is for active clients who need to log in, review invoices, and reserve longer one-hour meetings. If you are not a client yet, use the consultation form on the homepage instead.
+              This portal gives existing clients one place to review invoices, manage account access, and reserve longer one-hour meetings.
             </p>
 
             <div class="d-flex flex-wrap gap-3 mb-4 reveal">
-              <a href="#access" class="btn btn-brand btn-lg">Client Login Or Sign Up</a>
-              <a href="#bookings" class="btn btn-outline-light-soft btn-lg">Existing Client Meetings</a>
+              <a href="#access" class="btn btn-brand btn-lg" data-portal-signed-out-only>Client Login Or Sign Up</a>
+              <a href="#bookings" class="btn btn-outline-light-soft btn-lg" data-portal-auth-only hidden>Existing Client Meetings</a>
             </div>
 
             <div class="d-flex flex-wrap gap-2 hero-quick-links reveal">
-              <a class="quick-link" data-section-link href="#access">Login</a>
-              <a class="quick-link" data-section-link href="#invoices">Invoices</a>
-              <a class="quick-link" data-section-link href="#bookings">Bookings</a>
+              <a class="quick-link" data-section-link href="#access" data-portal-signed-out-only>Login</a>
+              <a class="quick-link" data-section-link href="#invoices" data-portal-auth-only hidden>Invoices</a>
+              <a class="quick-link" data-section-link href="#bookings" data-portal-auth-only hidden>Bookings</a>
               <a class="quick-link" href="index.html#contact">Contact</a>
             </div>
           </div>
@@ -106,9 +106,9 @@
               </div>
 
               <div class="summary-card glass">
-                <div class="mini-label mb-2">How You Manage It</div>
+                <div class="mini-label mb-2">Client Access</div>
                 <p class="mb-0">
-                  After a client account exists, you can post invoices in Firebase and receive booking notifications when new appointments are reserved or canceled.
+                  Clients can sign in anytime to review posted invoices, book meetings, and cancel upcoming appointments from one simple dashboard.
                 </p>
               </div>
             </div>
@@ -125,18 +125,17 @@
               <div class="eyebrow">Portal Access</div>
               <h2 id="authHeadline" class="section-title mb-3">Log in to your client portal</h2>
               <p class="mb-4">
-                Existing clients can log in here. If we are already working together and you need portal access, create your account here first, then use the dashboard for client meetings and invoices.
+                Existing clients can log in here to manage meetings, invoices, and account details. If you already work with TrueBit Forge North and need portal access, you can create your account here first.
               </p>
 
               <div id="setupNotice" class="portal-alert portal-alert-warning mb-4" hidden>
-                <strong>Firebase setup still needed.</strong>
+                <strong>Client portal temporarily unavailable.</strong>
                 <span>
-                  Add your Firebase project values in <code>script/firebase-config.js</code>, enable Email/Password auth,
-                  and create Firestore before client login will work.
+                  Please try again shortly or use the contact form if you need immediate help.
                 </span>
               </div>
 
-              <div class="portal-tab-row mb-4">
+              <div class="portal-tab-row mb-4" data-portal-signed-out-only>
                 <button class="portal-tab active" type="button" data-auth-tab="login" aria-selected="true">Login</button>
                 <button class="portal-tab" type="button" data-auth-tab="signup" aria-selected="false">Sign Up</button>
               </div>
@@ -145,7 +144,7 @@
                 <span id="portalMessageText"></span>
               </div>
 
-              <div id="authPanel">
+              <div id="authPanel" data-portal-signed-out-only>
                 <form id="loginForm" data-auth-form="login" class="row g-3">
                   <div class="col-12">
                     <label class="form-label text-white-50" for="loginEmail">Email Address</label>
@@ -195,22 +194,14 @@
                 </form>
               </div>
 
-              <div id="signedOutPanel" class="portal-info-panel glass mt-4">
-                <div class="mini-label mb-2">For You As The Site Owner</div>
-                <p class="mb-0">
-                  After a client signs up, find their UID in Firebase Authentication and post invoice documents to
-                  <code>clients/{uid}/invoices</code>. Bookings are managed inside the same client portal record.
-                </p>
-              </div>
-
-              <div class="portal-info-panel glass mt-4">
+              <div id="signedOutPanel" class="portal-info-panel glass mt-4" data-portal-signed-out-only>
                 <div class="mini-label mb-2">Client Meetings</div>
                 <h3 class="fw-bold h5 mb-3">Bookings live inside the dashboard after login.</h3>
                 <p class="mb-3">
                   Existing clients can sign in to reserve one-hour meetings, choose a phone, video, or in-person format, and cancel upcoming appointments from their dashboard.
                 </p>
                 <p class="mb-0 text-white-50">
-                  If you are a prospect looking for a short intro call, use the public consultation booking section on the homepage.
+                  If you are looking for a short intro call, use the consultation booking section on the homepage.
                 </p>
               </div>
             </div>
@@ -223,7 +214,7 @@
                   <div class="eyebrow">Client Dashboard</div>
                     <h2 class="section-title mb-3">Client dashboard</h2>
                     <p class="mb-0 text-white-50">
-                    Signed-in clients can manage upcoming meetings and review invoice records here. Signed-out visitors see the ready state and setup guidance.
+                    Signed-in clients can manage upcoming meetings and review invoice details here.
                   </p>
                 </div>
                 <button id="logoutBtn" type="button" class="btn btn-outline-light-soft" hidden>Log Out</button>
