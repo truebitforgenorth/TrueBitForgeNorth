@@ -965,6 +965,12 @@ body[data-page="services"] section[id] {
   color: #fff;
   border-radius: 14px;
   padding: 0.95rem 1rem;
+  color-scheme: dark;
+}
+
+.form-select option {
+  background: #120f1f;
+  color: #f5f4f1;
 }
 
 .form-control:focus,

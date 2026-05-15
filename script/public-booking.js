@@ -22,8 +22,8 @@ const bookingNotificationEndpoint = 'https://formspree.io/f/mreoknyz';
 
 const consultationForm = document.getElementById('consultationBookingForm');
 const consultationDate = document.getElementById('consultationDate');
+const consultationTime = document.getElementById('consultationTime');
 const consultationType = document.getElementById('consultationType');
-const consultationSlotGrid = document.getElementById('consultationSlotGrid');
 const consultationSubmitBtn = document.getElementById('consultationSubmitBtn');
 const consultationSelectionMeta = document.getElementById('consultationSelectionMeta');
 const consultationMessage = document.getElementById('consultationMessage');
@@ -106,8 +106,9 @@ function renderConsultationDateOptions() {
     consultationDate.disabled = true;
     renderedConsultationSlots = [];
     selectedConsultationBlockId = '';
-    if (consultationSlotGrid) {
-      consultationSlotGrid.innerHTML = '<p class="booking-empty-note mb-0">No consultation dates are open right now.</p>';
+    if (consultationTime) {
+      consultationTime.innerHTML = '<option value="">No consultation times available</option>';
+      consultationTime.disabled = true;
     }
     updateConsultationSelectionMeta();
     return;
@@ -140,13 +141,14 @@ function renderConsultationDateOptions() {
 }
 
 function renderConsultationSlots() {
-  if (!consultationDate || !consultationSlotGrid) return;
+  if (!consultationDate || !consultationTime) return;
 
   const selectedDate = parseDateKey(consultationDate.value);
   if (!selectedDate) {
     renderedConsultationSlots = [];
     selectedConsultationBlockId = '';
-    consultationSlotGrid.innerHTML = '<p class="booking-empty-note mb-0">Choose a date to see consultation times.</p>';
+    consultationTime.innerHTML = '<option value="">Choose a date first</option>';
+    consultationTime.disabled = true;
     updateConsultationSelectionMeta();
     return;
   }
@@ -161,29 +163,23 @@ function renderConsultationSlots() {
   }
 
   if (!renderedConsultationSlots.length) {
-    consultationSlotGrid.innerHTML = '<p class="booking-empty-note mb-0">No future consultation windows remain for this date.</p>';
+    consultationTime.innerHTML = '<option value="">No future consultation times remain</option>';
+    consultationTime.disabled = true;
     updateConsultationSelectionMeta();
     return;
   }
 
-  consultationSlotGrid.innerHTML = renderedConsultationSlots
-    .map((slot) => {
+  consultationTime.disabled = false;
+  consultationTime.innerHTML = [
+    '<option value="">Choose a time</option>',
+    ...renderedConsultationSlots.map((slot) => {
       const isBlocked = blockedBlockIds.has(slot.blockId);
       const isSelected = selectedConsultationBlockId === slot.blockId;
-
-      return `
-        <button
-          type="button"
-          class="booking-slot-btn${isBlocked ? ' is-booked' : ''}${isSelected ? ' is-selected' : ''}"
-          data-slot-id="${slot.blockId}"
-          ${isBlocked ? 'disabled' : ''}
-        >
-          <span class="booking-slot-time">${escapeHtml(slot.timeLabel)}</span>
-          <span class="booking-slot-state">${isBlocked ? 'Unavailable' : 'Open'}</span>
-        </button>
-      `;
+      return `<option value="${slot.blockId}" ${isBlocked ? 'disabled' : ''} ${isSelected ? 'selected' : ''}>${escapeHtml(
+        `${slot.timeLabel}${isBlocked ? ' - Unavailable' : ''}`
+      )}</option>`;
     })
-    .join('');
+  ].join('');
 
   updateConsultationSelectionMeta();
 }
@@ -367,11 +363,9 @@ async function initializeConsultationBooking() {
 
   consultationType?.addEventListener('change', updateConsultationSelectionMeta);
 
-  consultationSlotGrid?.addEventListener('click', (event) => {
-    const button = event.target.closest('[data-slot-id]');
-    if (!button) return;
-    selectedConsultationBlockId = button.getAttribute('data-slot-id') || '';
-    renderConsultationSlots();
+  consultationTime?.addEventListener('change', () => {
+    selectedConsultationBlockId = consultationTime.value || '';
+    updateConsultationSelectionMeta();
   });
 
   consultationForm.addEventListener('submit', handleConsultationSubmit);

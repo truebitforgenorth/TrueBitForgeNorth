@@ -60,7 +60,7 @@ const outstandingBalance = document.getElementById('outstandingBalance');
 const invoiceUpdatedAt = document.getElementById('invoiceUpdatedAt');
 const bookingForm = document.getElementById('bookingForm');
 const bookingDateSelect = document.getElementById('bookingDate');
-const bookingSlotGrid = document.getElementById('bookingSlotGrid');
+const bookingTimeSelect = document.getElementById('bookingTime');
 const bookingMeetingType = document.getElementById('bookingMeetingType');
 const bookingPhoneNumber = document.getElementById('bookingPhoneNumber');
 const bookingNotes = document.getElementById('bookingNotes');
@@ -572,8 +572,9 @@ function renderBookingDateOptions() {
     bookingDateSelect.disabled = true;
     renderedClientSlots = [];
     selectedClientSlotId = '';
-    if (bookingSlotGrid) {
-      bookingSlotGrid.innerHTML = '<p class="booking-empty-note mb-0">No eligible appointment dates are open right now.</p>';
+    if (bookingTimeSelect) {
+      bookingTimeSelect.innerHTML = '<option value="">No appointment times available</option>';
+      bookingTimeSelect.disabled = true;
     }
     updateSelectedBookingMeta();
     return;
@@ -606,13 +607,14 @@ function renderBookingDateOptions() {
 }
 
 function renderClientSlots() {
-  if (!bookingSlotGrid || !bookingDateSelect) return;
+  if (!bookingTimeSelect || !bookingDateSelect) return;
 
   const selectedDate = parseDateKey(bookingDateSelect.value);
   if (!selectedDate) {
     renderedClientSlots = [];
     selectedClientSlotId = '';
-    bookingSlotGrid.innerHTML = '<p class="booking-empty-note mb-0">Choose a date to see available time slots.</p>';
+    bookingTimeSelect.innerHTML = '<option value="">Choose a date first</option>';
+    bookingTimeSelect.disabled = true;
     updateSelectedBookingMeta();
     return;
   }
@@ -627,29 +629,23 @@ function renderClientSlots() {
   }
 
   if (!renderedClientSlots.length) {
-    bookingSlotGrid.innerHTML = '<p class="booking-empty-note mb-0">No future client-meeting slots remain for this date.</p>';
+    bookingTimeSelect.innerHTML = '<option value="">No future appointment times remain</option>';
+    bookingTimeSelect.disabled = true;
     updateSelectedBookingMeta();
     return;
   }
 
-  bookingSlotGrid.innerHTML = renderedClientSlots
-    .map((slot) => {
+  bookingTimeSelect.disabled = false;
+  bookingTimeSelect.innerHTML = [
+    '<option value="">Choose a time</option>',
+    ...renderedClientSlots.map((slot) => {
       const isBlocked = slot.blockIds.some((blockId) => blockedBlockIds.has(blockId));
       const isSelected = selectedClientSlotId === slot.slotId;
-
-      return `
-        <button
-          type="button"
-          class="booking-slot-btn${isBlocked ? ' is-booked' : ''}${isSelected ? ' is-selected' : ''}"
-          data-slot-id="${slot.slotId}"
-          ${isBlocked ? 'disabled' : ''}
-        >
-          <span class="booking-slot-time">${escapeHtml(slot.timeLabel)}</span>
-          <span class="booking-slot-state">${isBlocked ? 'Unavailable' : 'Open'}</span>
-        </button>
-      `;
+      return `<option value="${slot.slotId}" ${isBlocked ? 'disabled' : ''} ${isSelected ? 'selected' : ''}>${escapeHtml(
+        `${slot.timeLabel}${isBlocked ? ' - Unavailable' : ''}`
+      )}</option>`;
     })
-    .join('');
+  ].join('');
 
   updateSelectedBookingMeta();
 }
@@ -990,11 +986,9 @@ function initializePortal() {
 
   bookingMeetingType?.addEventListener('change', updateSelectedBookingMeta);
 
-  bookingSlotGrid?.addEventListener('click', (event) => {
-    const button = event.target.closest('[data-slot-id]');
-    if (!button) return;
-    selectedClientSlotId = button.getAttribute('data-slot-id') || '';
-    renderClientSlots();
+  bookingTimeSelect?.addEventListener('change', () => {
+    selectedClientSlotId = bookingTimeSelect.value || '';
+    updateSelectedBookingMeta();
   });
 
   bookingForm?.addEventListener('submit', handleBookingSubmit);
