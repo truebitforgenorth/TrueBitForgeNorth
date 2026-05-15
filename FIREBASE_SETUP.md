@@ -63,3 +63,32 @@ If you only have one file, you can still use:
 ## 6. Optional hosting step
 
 This portal works on any static hosting that serves these files over HTTPS. If you also want the whole site hosted on Firebase Hosting, connect this folder to your Firebase project and deploy from there.
+
+## 7. Free email notifications for new client accounts
+
+The client portal now sends a notification through the same Formspree inbox used by the public contact forms whenever a new client account is created.
+
+This happens after:
+
+1. Firebase Authentication creates the user
+2. Firestore saves the new `clients/{uid}` profile
+3. The portal posts a notification message to your Formspree endpoint
+
+The notification includes:
+
+- client name
+- company name
+- email address
+- Firebase UID
+
+### Important note
+
+This is a free client-side solution, so it is lighter-weight than a Cloud Function.
+
+That means:
+
+- it does not require the Blaze plan
+- it does not require SMTP setup
+- it depends on the browser successfully sending the notification after signup
+
+If you later want a more locked-down server-side version, you can switch to Firebase Functions.

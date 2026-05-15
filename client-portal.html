@@ -62,23 +62,24 @@
           <div class="col-lg-7 hero-content">
             <div class="eyebrow reveal">
               <span class="live-dot"></span>
-              Secure Invoice Access
+              Secure Client Access
             </div>
 
-            <h1 class="hero-title reveal">Client login and invoice access, powered by Firebase.</h1>
+            <h1 class="hero-title reveal">Client login, invoices, and bookings powered by Firebase.</h1>
 
             <p class="hero-copy wide-copy reveal">
-              Clients can create an account, sign in securely, and view the invoices you post to their record in Firestore.
+              Clients can create an account, sign in securely, review invoices, and reserve one-hour appointment slots from the portal.
             </p>
 
             <div class="d-flex flex-wrap gap-3 mb-4 reveal">
               <a href="#access" class="btn btn-brand btn-lg">Open Portal Access</a>
-              <a href="#invoices" class="btn btn-outline-light-soft btn-lg">View Invoice Area</a>
+              <a href="#bookings" class="btn btn-outline-light-soft btn-lg">View Booking Area</a>
             </div>
 
             <div class="d-flex flex-wrap gap-2 hero-quick-links reveal">
               <a class="quick-link" data-section-link href="#access">Login</a>
               <a class="quick-link" data-section-link href="#invoices">Invoices</a>
+              <a class="quick-link" data-section-link href="#bookings">Bookings</a>
               <a class="quick-link" href="index.html#contact">Contact</a>
             </div>
           </div>
@@ -87,9 +88,9 @@
             <div class="hero-panel glass reveal">
               <div class="summary-card glass mb-3">
                 <div class="mini-label mb-2">Portal Workflow</div>
-                <h2 class="fw-bold h4">Sign up, log in, and review posted invoices.</h2>
+                <h2 class="fw-bold h4">Sign up, log in, book time, and review posted invoices.</h2>
                 <p class="mb-0">
-                  Each client sees only the invoice documents stored in their own Firebase record.
+                  Each client sees only their own invoices and appointments inside the portal.
                 </p>
               </div>
 
@@ -98,6 +99,8 @@
                 <ul class="pricing-list mb-0">
                   <li><i class="bi bi-check-circle-fill"></i><span>Create an account with email and password</span></li>
                   <li><i class="bi bi-check-circle-fill"></i><span>Log in from any device</span></li>
+                  <li><i class="bi bi-check-circle-fill"></i><span>Book one-hour sessions Monday through Saturday</span></li>
+                  <li><i class="bi bi-check-circle-fill"></i><span>Cancel upcoming appointments directly from the dashboard</span></li>
                   <li><i class="bi bi-check-circle-fill"></i><span>Review posted invoice amounts, statuses, and due dates</span></li>
                 </ul>
               </div>
@@ -105,7 +108,7 @@
               <div class="summary-card glass">
                 <div class="mini-label mb-2">How You Manage It</div>
                 <p class="mb-0">
-                  After a client account exists, you add invoice documents in Firebase under that client UID.
+                  After a client account exists, you can post invoices in Firebase and receive booking notifications when new appointments are reserved or canceled.
                 </p>
               </div>
             </div>
@@ -122,7 +125,7 @@
               <div class="eyebrow">Portal Access</div>
               <h2 id="authHeadline" class="section-title mb-3">Log in to your invoice portal</h2>
               <p class="mb-4">
-                Existing clients can log in here. New clients can create an account first, then you can post invoices to their record.
+                Existing clients can log in here. New clients can create an account first, then you can post invoices to their record and let them reserve time from the booking area.
               </p>
 
               <div id="setupNotice" class="portal-alert portal-alert-warning mb-4" hidden>
@@ -177,6 +180,11 @@
                   </div>
 
                   <div class="col-12">
+                    <label class="form-label text-white-50" for="signupPhone">Phone Number</label>
+                    <input id="signupPhone" name="phoneNumber" type="tel" class="form-control" placeholder="(555) 555-5555">
+                  </div>
+
+                  <div class="col-12">
                     <label class="form-label text-white-50" for="signupPassword">Password</label>
                     <input id="signupPassword" name="password" type="password" class="form-control" placeholder="Create password" minlength="6" required>
                   </div>
@@ -191,7 +199,18 @@
                 <div class="mini-label mb-2">For You As The Site Owner</div>
                 <p class="mb-0">
                   After a client signs up, find their UID in Firebase Authentication and post invoice documents to
-                  <code>clients/{uid}/invoices</code>.
+                  <code>clients/{uid}/invoices</code>. Bookings are managed inside the same client portal record.
+                </p>
+              </div>
+
+              <div class="portal-info-panel glass mt-4">
+                <div class="mini-label mb-2">Client Meetings</div>
+                <h3 class="fw-bold h5 mb-3">Bookings live inside the dashboard after login.</h3>
+                <p class="mb-3">
+                  Existing clients can sign in to reserve one-hour meetings, choose a phone, video, or in-person format, and cancel upcoming appointments from their dashboard.
+                </p>
+                <p class="mb-0 text-white-50">
+                  If you are a prospect looking for a short intro call, use the public consultation booking section on the homepage.
                 </p>
               </div>
             </div>
@@ -202,9 +221,9 @@
               <div class="portal-dashboard-header">
                 <div>
                   <div class="eyebrow">Client Dashboard</div>
-                  <h2 class="section-title mb-3">Invoice overview</h2>
+                  <h2 class="section-title mb-3">Invoices and bookings</h2>
                   <p class="mb-0 text-white-50">
-                    Signed-in clients will see their invoice list here. Signed-out visitors see the ready state and setup guidance.
+                    Signed-in clients can manage upcoming appointments and review invoice records here. Signed-out visitors see the ready state and setup guidance.
                   </p>
                 </div>
                 <button id="logoutBtn" type="button" class="btn btn-outline-light-soft" hidden>Log Out</button>
@@ -243,7 +262,92 @@
                 </div>
               </div>
 
-              <div id="invoiceList" class="portal-invoice-stack"></div>
+              <div id="invoices">
+                <div id="invoiceList" class="portal-invoice-stack"></div>
+              </div>
+
+              <div class="portal-section-divider"></div>
+
+              <div id="bookings" class="portal-bookings-shell">
+                <div class="portal-dashboard-header">
+                  <div>
+                    <div class="eyebrow">Booking Desk</div>
+                    <h2 class="section-title mb-3">Schedule one-hour client meetings</h2>
+                    <p class="mb-0 text-white-50">
+                      Available appointment windows are Monday through Friday from 12:00 PM to 6:00 PM, and Saturday from 3:00 PM to 6:00 PM.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="row g-4 align-items-stretch">
+                  <div class="col-xl-6">
+                    <div class="dashboard-card glass h-100">
+                      <div class="mini-label mb-2">Reserve Time</div>
+                      <h3 class="fw-bold h4 mb-3">Choose a date and open slot</h3>
+                      <p class="mb-4 text-white-50">
+                        Pick from the next available booking dates, add an optional note, and submit the request from your signed-in client account.
+                      </p>
+
+                      <div id="bookingMessage" class="portal-alert portal-alert-info mb-4" hidden>
+                        <span id="bookingMessageText"></span>
+                      </div>
+
+                      <form id="bookingForm" class="row g-3">
+                        <div class="col-12">
+                          <label class="form-label text-white-50" for="bookingDate">Available Date</label>
+                          <select id="bookingDate" name="bookingDate" class="form-select" required></select>
+                        </div>
+
+                        <div class="col-12">
+                          <span class="form-label d-block text-white-50 mb-2">Time Slot</span>
+                          <div id="bookingSlotGrid" class="booking-slot-grid"></div>
+                        </div>
+
+                        <div class="col-12">
+                          <label class="form-label text-white-50" for="bookingMeetingType">Meeting Type</label>
+                          <select id="bookingMeetingType" name="bookingMeetingType" class="form-select" required>
+                            <option value="Client Session" selected>Client Session</option>
+                            <option value="Phone Call">Phone Call</option>
+                            <option value="Video Call">Video Call</option>
+                            <option value="In-Person Meeting">In-Person Meeting</option>
+                          </select>
+                        </div>
+
+                        <div class="col-12">
+                          <label class="form-label text-white-50" for="bookingPhoneNumber">Phone Number</label>
+                          <input id="bookingPhoneNumber" name="bookingPhoneNumber" type="tel" class="form-control"
+                            placeholder="Best number for this meeting">
+                        </div>
+
+                        <div class="col-12">
+                          <label class="form-label text-white-50" for="bookingNotes">Project Notes</label>
+                          <textarea id="bookingNotes" name="bookingNotes" class="form-control" rows="4"
+                            placeholder="Optional details about what you want to cover in the appointment."></textarea>
+                        </div>
+
+                        <div class="col-12 d-flex flex-column flex-md-row gap-3 align-items-md-center justify-content-between">
+                          <div id="selectedBookingMeta" class="booking-selection-meta text-white-50">
+                            No time selected yet.
+                          </div>
+                          <button id="bookingSubmitBtn" type="submit" class="btn btn-brand" disabled>Book Appointment</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+
+                  <div class="col-xl-6">
+                    <div class="dashboard-card glass h-100">
+                      <div class="mini-label mb-2">Active Bookings</div>
+                      <h3 class="fw-bold h4 mb-3">Manage upcoming appointments</h3>
+                      <p class="mb-4 text-white-50">
+                        Confirmed sessions appear here automatically. If plans change, cancel the appointment and the time slot will reopen.
+                      </p>
+
+                      <div id="bookingList" class="portal-booking-list"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

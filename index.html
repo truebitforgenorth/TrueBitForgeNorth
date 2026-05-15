@@ -401,6 +401,100 @@
       </div>
     </section>
 
+    <section class="section-padding" id="consultation">
+      <div class="container">
+        <div class="row g-4 align-items-stretch">
+          <div class="col-lg-5 reveal">
+            <div class="contact-card glass h-100">
+              <div class="eyebrow">Book A Consultation</div>
+              <h2 class="section-title mb-3">Reserve a 15-minute consultation before you reach out.</h2>
+              <p class="mb-4">
+                Prospects can book a short consultation call, video chat, or in-person intro session right here. These slots use the same shared calendar as client meetings, so availability stays accurate across the whole site.
+              </p>
+              <ul class="contact-list consultation-summary-list">
+                <li><i class="bi bi-clock-history"></i><span><strong>Length:</strong> 15-minute consultation windows</span></li>
+                <li><i class="bi bi-calendar3"></i><span><strong>Hours:</strong> Monday-Friday 12:00 PM-6:00 PM, Saturday 3:00 PM-6:00 PM</span></li>
+                <li><i class="bi bi-telephone"></i><span><strong>Types:</strong> Phone, video, or in-person consultation</span></li>
+              </ul>
+              <p class="consultation-summary-note mt-4 mb-0">
+                Existing clients should use the <a href="client-portal.html" class="footer-link">client portal</a> for longer meeting bookings.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-7 reveal">
+            <div class="contact-card glass h-100">
+              <div class="consultation-portal-cta">
+                <div>
+                  <div class="mini-label mb-1">Existing Client?</div>
+                  <p class="mb-0 text-white-50">Log in to the client portal for longer meeting bookings and appointment management.</p>
+                </div>
+                <a href="client-portal.html#access" class="btn btn-outline-light-soft btn-sm">Open Client Portal</a>
+              </div>
+
+              <div id="consultationMessage" class="portal-alert portal-alert-info mb-4" hidden>
+                <span id="consultationMessageText"></span>
+              </div>
+
+              <form id="consultationBookingForm" class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label text-white-50" for="consultationName">Full Name</label>
+                  <input id="consultationName" name="consultationName" type="text" class="form-control" placeholder="Your name" required>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label text-white-50" for="consultationEmail">Email Address</label>
+                  <input id="consultationEmail" name="consultationEmail" type="email" class="form-control" placeholder="you@example.com" required>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label text-white-50" for="consultationPhone">Phone Number</label>
+                  <input id="consultationPhone" name="consultationPhone" type="tel" class="form-control" placeholder="(555) 555-5555" required>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label text-white-50" for="consultationCompany">Business Name</label>
+                  <input id="consultationCompany" name="consultationCompany" type="text" class="form-control" placeholder="Your business">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label text-white-50" for="consultationType">Consultation Type</label>
+                  <select id="consultationType" name="consultationType" class="form-select" required>
+                    <option value="Phone Call" selected>Phone Call</option>
+                    <option value="Video Call">Video Call</option>
+                    <option value="In-Person Meeting">In-Person Meeting</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label text-white-50" for="consultationDate">Available Date</label>
+                  <select id="consultationDate" name="consultationDate" class="form-select" required></select>
+                </div>
+
+                <div class="col-md-6">
+                  <span class="form-label d-block text-white-50 mb-2">Available Time</span>
+                  <div id="consultationSlotGrid" class="consultation-slot-grid"></div>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label text-white-50" for="consultationNotes">What would you like to talk about?</label>
+                  <textarea id="consultationNotes" name="consultationNotes" class="form-control" rows="4"
+                    placeholder="Optional details about your project, goals, or questions."></textarea>
+                </div>
+
+                <div class="col-12 d-flex flex-column flex-md-row gap-3 align-items-md-center justify-content-between mt-2">
+                  <p id="consultationSelectionMeta" class="small text-white-50 mb-0">
+                    Choose a date and time to reserve your consultation.
+                  </p>
+                  <button id="consultationSubmitBtn" type="submit" class="btn btn-brand" disabled>Book Consultation</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="section-padding" id="contact">
       <div class="container">
         <div class="row g-4 align-items-stretch">
@@ -498,6 +592,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script/myscript.js"></script>
+  <script type="module" src="script/public-booking.js"></script>
 </body>
 
 </html>

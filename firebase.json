@@ -1,4 +1,14 @@
 {
+  "functions": {
+    "source": "functions",
+    "runtime": "nodejs20",
+    "ignore": [
+      "node_modules",
+      ".git",
+      "firebase-debug.log",
+      "firebase-debug.*.log"
+    ]
+  },
   "firestore": {
     "rules": "firestore.rules"
   },
@@ -10,6 +20,7 @@
       ".firebaserc",
       "firestore.rules",
       "FIREBASE_SETUP.md",
+      "functions/**",
       "UNUSED/**",
       "**/.*",
       "**/node_modules/**"

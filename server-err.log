@@ -1,0 +1,6 @@
+┌────────────────────────────────────────────────────────────┐
+│             firebase-tools update check failed             │
+│            Try running with sudo or get access             │
+│            to the local update config store via            │
+│ sudo chown -R $USER:$(id -gn $USER) C:\Users\kayrl\.config │
+└────────────────────────────────────────────────────────────┘

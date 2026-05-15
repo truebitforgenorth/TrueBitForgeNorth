@@ -19,6 +19,38 @@ service cloud.firestore {
         allow read: if isClientOwner(userId);
         allow write: if false;
       }
+
+      match /appointments/{appointmentId} {
+        allow create: if isClientOwner(userId) && request.resource.data.uid == request.auth.uid;
+        allow read: if isClientOwner(userId);
+        allow update: if isClientOwner(userId) && resource.data.uid == request.auth.uid;
+        allow delete: if false;
+      }
+    }
+
+    match /publicBookings/{bookingId} {
+      allow create: if request.auth == null;
+      allow read: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    match /bookingBlocks/{blockId} {
+      allow read: if true;
+      allow create: if (
+        request.auth == null
+        && request.resource.data.ownerKind == 'prospect'
+        && request.resource.data.durationMinutes == 15
+      ) || (
+        signedIn()
+        && request.resource.data.ownerKind == 'client'
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.durationMinutes == 60
+      );
+      allow update: if false;
+      allow delete: if signedIn()
+        && resource.data.ownerKind == 'client'
+        && resource.data.ownerUid == request.auth.uid;
     }
   }
 }
