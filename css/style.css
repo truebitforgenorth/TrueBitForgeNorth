@@ -55,7 +55,7 @@ a {
 }
 
 .section-padding {
-  padding: 100px 0;
+  padding: 60px 0;
 }
 
 .glass {
@@ -378,13 +378,13 @@ a {
 
 .hero {
   position: relative;
-  padding-top: 66px;
-  padding-bottom: 110px;
+  padding-top: 46px;
+  padding-bottom: 68px;
   overflow: hidden;
 }
 
 .page-hero {
-  padding-bottom: 90px;
+  padding-bottom: 56px;
 }
 
 .hero::before,
@@ -1034,12 +1034,12 @@ footer {
   }
 
   .hero {
-    padding-top: 58px;
-    padding-bottom: 80px;
+    padding-top: 40px;
+    padding-bottom: 54px;
   }
 
   .section-padding {
-    padding: 80px 0;
+    padding: 52px 0;
   }
 
   .hero-content,
@@ -1166,6 +1166,19 @@ footer {
 }
 
 @media (max-width: 767.98px) {
+  .section-padding {
+    padding: 42px 0;
+  }
+
+  .hero {
+    padding-top: 34px;
+    padding-bottom: 46px;
+  }
+
+  .page-hero {
+    padding-bottom: 40px;
+  }
+
   .hero-title {
     font-size: clamp(2.6rem, 13vw, 4rem);
   }

@@ -162,7 +162,7 @@ function setAuthMode(mode) {
     authHeadline.textContent =
       mode === 'signup'
         ? 'Create a client account'
-        : 'Log in to your invoice portal';
+        : 'Log in to your client portal';
   }
 
   clearPortalMessage();
