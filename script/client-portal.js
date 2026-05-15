@@ -10,13 +10,32 @@ import {
 } from 'https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js';
 import {
   collection,
+  doc,
+  getDoc,
   getDocs,
   getFirestore,
+  runTransaction,
   serverTimestamp,
   setDoc,
-  doc
+  writeBatch
 } from 'https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js';
 import firebaseConfig from './firebase-config.js';
+import {
+  bookingWindowDays,
+  escapeHtml,
+  formatDate,
+  formatDateTime,
+  formatTimeLabel,
+  getClientMeetingSlotsForDate,
+  getEligibleBookingDates,
+  normalizeStatus,
+  statusClassName,
+  toDateValue,
+  parseDateKey
+} from './booking-utils.js';
+
+const accountNotificationEndpoint = 'https://formspree.io/f/mreoknyz';
+const bookingNotificationEndpoint = 'https://formspree.io/f/mreoknyz';
 
 const portalShell = document.getElementById('portalShell');
 const setupNotice = document.getElementById('setupNotice');
@@ -39,10 +58,27 @@ const invoiceCount = document.getElementById('invoiceCount');
 const openInvoiceCount = document.getElementById('openInvoiceCount');
 const outstandingBalance = document.getElementById('outstandingBalance');
 const invoiceUpdatedAt = document.getElementById('invoiceUpdatedAt');
+const bookingForm = document.getElementById('bookingForm');
+const bookingDateSelect = document.getElementById('bookingDate');
+const bookingSlotGrid = document.getElementById('bookingSlotGrid');
+const bookingMeetingType = document.getElementById('bookingMeetingType');
+const bookingPhoneNumber = document.getElementById('bookingPhoneNumber');
+const bookingNotes = document.getElementById('bookingNotes');
+const bookingList = document.getElementById('bookingList');
+const bookingMessage = document.getElementById('bookingMessage');
+const bookingMessageText = document.getElementById('bookingMessageText');
+const bookingSubmitBtn = document.getElementById('bookingSubmitBtn');
+const selectedBookingMeta = document.getElementById('selectedBookingMeta');
 
 let auth;
 let db;
 let activeMode = 'login';
+let currentUser = null;
+let currentClientProfile = null;
+let bookingBlocks = [];
+let currentAppointments = [];
+let renderedClientSlots = [];
+let selectedClientSlotId = '';
 
 function hasRealFirebaseConfig(config) {
   return Boolean(
@@ -52,15 +88,6 @@ function hasRealFirebaseConfig(config) {
     !config.apiKey.startsWith('YOUR_') &&
     !config.projectId.startsWith('YOUR_')
   );
-}
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
 }
 
 function setPortalMessage(message, tone = 'info') {
@@ -85,10 +112,36 @@ function clearPortalMessage() {
   portalMessageText.textContent = '';
 }
 
+function setBookingMessage(message, tone = 'info') {
+  if (!bookingMessage || !bookingMessageText) return;
+
+  const toneClassMap = {
+    info: 'portal-alert-info',
+    success: 'portal-alert-success',
+    warning: 'portal-alert-warning'
+  };
+
+  bookingMessage.hidden = false;
+  bookingMessage.classList.remove('portal-alert-info', 'portal-alert-success', 'portal-alert-warning');
+  bookingMessage.classList.add(toneClassMap[tone] || toneClassMap.info);
+  bookingMessageText.textContent = message;
+}
+
+function clearBookingMessage() {
+  if (!bookingMessage || !bookingMessageText) return;
+  bookingMessage.hidden = true;
+  bookingMessage.classList.remove('portal-alert-info', 'portal-alert-success', 'portal-alert-warning');
+  bookingMessageText.textContent = '';
+}
+
 function setButtonsDisabled(form, disabled) {
   if (!form) return;
-  form.querySelectorAll('button').forEach((button) => {
-    button.disabled = disabled;
+  form.querySelectorAll('button, select, textarea, input').forEach((field) => {
+    if (field.id === 'bookingDate' || field.id === 'bookingMeetingType' || field.id === 'bookingNotes') {
+      field.disabled = disabled;
+    } else if (field.tagName === 'BUTTON' || form.contains(field)) {
+      field.disabled = disabled;
+    }
   });
 }
 
@@ -123,48 +176,16 @@ function formatCurrency(value) {
   }).format(Number.isFinite(numericValue) ? numericValue : 0);
 }
 
-function toDateValue(value) {
-  if (!value) return null;
-  if (typeof value.toDate === 'function') return value.toDate();
-  if (value instanceof Date) return value;
-  if (typeof value === 'string' || typeof value === 'number') {
-    const parsed = new Date(value);
-    return Number.isNaN(parsed.getTime()) ? null : parsed;
-  }
-  if (typeof value.seconds === 'number') {
-    return new Date(value.seconds * 1000);
-  }
-  return null;
-}
-
-function formatDate(value) {
-  const date = toDateValue(value);
-  if (!date) return 'Not set';
-
-  return new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric'
-  }).format(date);
-}
-
 function invoiceSortValue(invoice) {
   const candidate = invoice.issuedAt || invoice.dueDate || invoice.createdAt || null;
   const date = toDateValue(candidate);
   return date ? date.getTime() : 0;
 }
 
-function normalizeStatus(status) {
-  return String(status || 'open').trim().toLowerCase();
-}
-
-function statusClassName(status) {
-  const normalized = normalizeStatus(status);
-
-  if (normalized === 'paid') return 'is-paid';
-  if (normalized === 'overdue') return 'is-overdue';
-  if (normalized === 'draft') return 'is-draft';
-  return 'is-open';
+function appointmentSortValue(appointment) {
+  const candidate = appointment.startAt || appointment.createdAt || null;
+  const date = toDateValue(candidate);
+  return date ? date.getTime() : 0;
 }
 
 function renderEmptyInvoices() {
@@ -317,6 +338,7 @@ async function createClientProfile(user, signupFormData) {
     email: user.email,
     displayName: signupFormData.get('displayName') || '',
     companyName: signupFormData.get('companyName') || '',
+    phoneNumber: signupFormData.get('phoneNumber') || '',
     role: 'client',
     createdAt: serverTimestamp()
   };
@@ -324,15 +346,345 @@ async function createClientProfile(user, signupFormData) {
   await setDoc(doc(db, 'clients', user.uid), profile, { merge: true });
 }
 
+async function loadClientProfile(user) {
+  if (!db) return null;
+
+  const profileRef = doc(db, 'clients', user.uid);
+  const snapshot = await getDoc(profileRef);
+  currentClientProfile = snapshot.exists() ? snapshot.data() : null;
+  return currentClientProfile;
+}
+
+async function sendNewAccountNotification(user, signupFormData) {
+  const clientName = String(signupFormData.get('displayName') || '').trim();
+  const companyName = String(signupFormData.get('companyName') || '').trim();
+  const clientEmail = String(user?.email || signupFormData.get('email') || '').trim();
+  const phoneNumber = String(signupFormData.get('phoneNumber') || '').trim();
+  const message = [
+    'A new client portal account was created.',
+    '',
+    `Name: ${clientName || 'Not provided'}`,
+    `Company: ${companyName || 'Not provided'}`,
+    `Email: ${clientEmail || 'Not provided'}`,
+    `Phone: ${phoneNumber || 'Not provided'}`,
+    `UID: ${user?.uid || 'Not available'}`
+  ].join('\n');
+
+  const notificationData = new FormData();
+  notificationData.append('_subject', `New client portal account: ${companyName || clientName || clientEmail || 'New signup'}`);
+  notificationData.append('source', 'Client Portal Signup');
+  notificationData.append('name', clientName || 'Client Portal');
+  notificationData.append('email', clientEmail || 'noreply@truebitforgenorth.com');
+  notificationData.append('company', companyName || 'Not provided');
+  notificationData.append('phone', phoneNumber || 'Not provided');
+  notificationData.append('uid', user?.uid || 'Not available');
+  notificationData.append('message', message);
+
+  const response = await fetch(accountNotificationEndpoint, {
+    method: 'POST',
+    body: notificationData,
+    headers: {
+      Accept: 'application/json'
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`Account notification request failed with status ${response.status}.`);
+  }
+}
+
+async function sendBookingNotification(action, appointment) {
+  const clientName = String(appointment.clientName || currentClientProfile?.displayName || currentUser?.displayName || '').trim();
+  const companyName = String(appointment.companyName || currentClientProfile?.companyName || '').trim();
+  const clientEmail = String(appointment.clientEmail || currentUser?.email || '').trim();
+  const phoneNumber = String(appointment.phoneNumber || currentClientProfile?.phoneNumber || '').trim();
+  const notes = String(appointment.notes || '').trim();
+  const message = [
+    `A client portal booking was ${action}.`,
+    '',
+    `Client: ${clientName || 'Not provided'}`,
+    `Company: ${companyName || 'Not provided'}`,
+    `Email: ${clientEmail || 'Not provided'}`,
+    `Phone: ${phoneNumber || 'Not provided'}`,
+    `Meeting Type: ${appointment.meetingType || 'Client Session'}`,
+    `Date: ${appointment.dayLabel || formatDate(appointment.startAt)}`,
+    `Time: ${appointment.timeLabel || 'Not provided'}`,
+    `Status: ${appointment.status || action}`,
+    `Appointment ID: ${appointment.appointmentId || 'Not available'}`,
+    `Notes: ${notes || 'None'}`
+  ].join('\n');
+
+  const notificationData = new FormData();
+  notificationData.append('_subject', `Client booking ${action}: ${clientName || clientEmail || 'Portal Client'}`);
+  notificationData.append('source', 'Client Portal Booking');
+  notificationData.append('action', action);
+  notificationData.append('name', clientName || 'Portal Client');
+  notificationData.append('email', clientEmail || 'noreply@truebitforgenorth.com');
+  notificationData.append('company', companyName || 'Not provided');
+  notificationData.append('phone', phoneNumber || 'Not provided');
+  notificationData.append('meetingType', appointment.meetingType || 'Client Session');
+  notificationData.append('appointmentDate', appointment.dayLabel || formatDate(appointment.startAt));
+  notificationData.append('appointmentTime', appointment.timeLabel || 'Not provided');
+  notificationData.append('appointmentId', appointment.appointmentId || 'Not available');
+  notificationData.append('message', message);
+
+  const response = await fetch(bookingNotificationEndpoint, {
+    method: 'POST',
+    body: notificationData,
+    headers: {
+      Accept: 'application/json'
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`Booking notification request failed with status ${response.status}.`);
+  }
+}
+
+function renderEmptyBookings() {
+  if (!bookingList) return;
+
+  bookingList.innerHTML = `
+    <article class="invoice-card glass invoice-card-empty">
+      <div>
+        <div class="mini-label mb-2">No active client meetings</div>
+        <h3 class="fw-bold h4 mb-3">Your calendar is open.</h3>
+        <p class="mb-0 text-white-50">
+          Select an available one-hour slot on the left to reserve your next client meeting.
+        </p>
+      </div>
+    </article>
+  `;
+}
+
+function renderAppointments(appointments) {
+  if (!bookingList) return;
+
+  if (!appointments.length) {
+    renderEmptyBookings();
+    return;
+  }
+
+  bookingList.innerHTML = appointments
+    .map((appointment) => {
+      const status = normalizeStatus(appointment.status || 'booked');
+      const startsAt = toDateValue(appointment.startAt);
+      const canCancel = status === 'booked' && startsAt && startsAt.getTime() > Date.now();
+
+      return `
+        <article class="invoice-card glass booking-card">
+          <div class="invoice-card-top">
+            <div>
+              <div class="mini-label mb-2">Client Meeting</div>
+              <h3 class="fw-bold h4 mb-2">${escapeHtml(appointment.dayLabel || formatDate(appointment.startAt))}</h3>
+              <p class="invoice-id mb-0">${escapeHtml(appointment.appointmentId || 'Booking record')}</p>
+            </div>
+            <div class="invoice-amount-wrap">
+              <span class="invoice-status ${statusClassName(status)}">${escapeHtml(status)}</span>
+              <div class="booking-time-label">${escapeHtml(appointment.timeLabel || 'Time pending')}</div>
+            </div>
+          </div>
+
+          <div class="invoice-meta-grid">
+            <div class="invoice-meta-item">
+              <span class="mini-label">Meeting Type</span>
+              <strong>${escapeHtml(appointment.meetingType || 'Client Session')}</strong>
+            </div>
+            <div class="invoice-meta-item">
+              <span class="mini-label">Starts</span>
+              <strong>${escapeHtml(formatDateTime(appointment.startAt))}</strong>
+            </div>
+            <div class="invoice-meta-item">
+              <span class="mini-label">Company</span>
+              <strong>${escapeHtml(appointment.companyName || 'Not provided')}</strong>
+            </div>
+          </div>
+
+          <p class="invoice-notes mb-0">${escapeHtml(appointment.notes || 'No project notes were added for this booking.')}</p>
+
+          <div class="invoice-card-actions">
+            ${canCancel
+              ? `<button type="button" class="btn btn-outline-light-soft btn-sm" data-cancel-booking="${escapeHtml(
+                  appointment.appointmentId || ''
+                )}">Cancel Appointment</button>`
+              : '<span class="booking-card-note">This booking is already canceled or has already started.</span>'}
+          </div>
+        </article>
+      `;
+    })
+    .join('');
+}
+
+async function loadBookingBlocks() {
+  if (!db) return;
+
+  const snapshot = await getDocs(collection(db, 'bookingBlocks'));
+  bookingBlocks = snapshot.docs.map((blockDoc) => ({
+    id: blockDoc.id,
+    ...blockDoc.data()
+  }));
+}
+
+async function loadClientAppointments(user) {
+  if (!db) return;
+
+  const snapshot = await getDocs(collection(db, 'clients', user.uid, 'appointments'));
+  currentAppointments = snapshot.docs
+    .map((appointmentDoc) => ({
+      id: appointmentDoc.id,
+      ...appointmentDoc.data()
+    }))
+    .sort((left, right) => appointmentSortValue(left) - appointmentSortValue(right));
+}
+
+function getBlockedBlockIds() {
+  return new Set(
+    bookingBlocks
+      .filter((block) => normalizeStatus(block.status) === 'booked')
+      .map((block) => block.blockId || block.id)
+  );
+}
+
+function updateSelectedBookingMeta() {
+  const selectedSlot = renderedClientSlots.find((slot) => slot.slotId === selectedClientSlotId);
+
+  if (!selectedBookingMeta || !bookingSubmitBtn) return;
+
+  if (!selectedSlot) {
+    selectedBookingMeta.textContent = 'No time selected yet.';
+    bookingSubmitBtn.disabled = true;
+    return;
+  }
+
+  const meetingTypeLabel = bookingMeetingType?.value || 'Client Session';
+  selectedBookingMeta.textContent = `${meetingTypeLabel} on ${selectedSlot.dayLabel} at ${selectedSlot.timeLabel}`;
+  bookingSubmitBtn.disabled = false;
+}
+
+function renderBookingDateOptions() {
+  if (!bookingDateSelect) return;
+
+  const eligibleDates = getEligibleBookingDates(bookingWindowDays);
+  const currentValue = bookingDateSelect.value;
+
+  if (!eligibleDates.length) {
+    bookingDateSelect.innerHTML = '<option value="">No booking dates available</option>';
+    bookingDateSelect.disabled = true;
+    renderedClientSlots = [];
+    selectedClientSlotId = '';
+    if (bookingSlotGrid) {
+      bookingSlotGrid.innerHTML = '<p class="booking-empty-note mb-0">No eligible appointment dates are open right now.</p>';
+    }
+    updateSelectedBookingMeta();
+    return;
+  }
+
+  bookingDateSelect.disabled = false;
+  bookingDateSelect.innerHTML = eligibleDates
+    .map((date) => {
+      const value = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+      return `<option value="${value}">${escapeHtml(
+        new Intl.DateTimeFormat('en-US', {
+          weekday: 'long',
+          month: 'short',
+          day: 'numeric'
+        }).format(date)
+      )}</option>`;
+    })
+    .join('');
+
+  bookingDateSelect.value = eligibleDates.some((date) => {
+    const value = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    return value === currentValue;
+  })
+    ? currentValue
+    : `${eligibleDates[0].getFullYear()}-${String(eligibleDates[0].getMonth() + 1).padStart(2, '0')}-${String(
+        eligibleDates[0].getDate()
+      ).padStart(2, '0')}`;
+
+  renderClientSlots();
+}
+
+function renderClientSlots() {
+  if (!bookingSlotGrid || !bookingDateSelect) return;
+
+  const selectedDate = parseDateKey(bookingDateSelect.value);
+  if (!selectedDate) {
+    renderedClientSlots = [];
+    selectedClientSlotId = '';
+    bookingSlotGrid.innerHTML = '<p class="booking-empty-note mb-0">Choose a date to see available time slots.</p>';
+    updateSelectedBookingMeta();
+    return;
+  }
+
+  const blockedBlockIds = getBlockedBlockIds();
+  const now = Date.now();
+
+  renderedClientSlots = getClientMeetingSlotsForDate(selectedDate).filter((slot) => slot.startAt.getTime() > now);
+
+  if (!renderedClientSlots.some((slot) => slot.slotId === selectedClientSlotId)) {
+    selectedClientSlotId = '';
+  }
+
+  if (!renderedClientSlots.length) {
+    bookingSlotGrid.innerHTML = '<p class="booking-empty-note mb-0">No future client-meeting slots remain for this date.</p>';
+    updateSelectedBookingMeta();
+    return;
+  }
+
+  bookingSlotGrid.innerHTML = renderedClientSlots
+    .map((slot) => {
+      const isBlocked = slot.blockIds.some((blockId) => blockedBlockIds.has(blockId));
+      const isSelected = selectedClientSlotId === slot.slotId;
+
+      return `
+        <button
+          type="button"
+          class="booking-slot-btn${isBlocked ? ' is-booked' : ''}${isSelected ? ' is-selected' : ''}"
+          data-slot-id="${slot.slotId}"
+          ${isBlocked ? 'disabled' : ''}
+        >
+          <span class="booking-slot-time">${escapeHtml(slot.timeLabel)}</span>
+          <span class="booking-slot-state">${isBlocked ? 'Unavailable' : 'Open'}</span>
+        </button>
+      `;
+    })
+    .join('');
+
+  updateSelectedBookingMeta();
+}
+
+async function loadBookings(user) {
+  try {
+    await Promise.all([loadBookingBlocks(), loadClientAppointments(user)]);
+    renderBookingDateOptions();
+    renderAppointments(currentAppointments);
+  } catch (error) {
+    console.error(error);
+    renderEmptyBookings();
+    setBookingMessage('We could not load the booking schedule yet. Please refresh and try again.', 'warning');
+  }
+}
+
 function showSignedOut() {
+  currentUser = null;
+  currentClientProfile = null;
+  bookingBlocks = [];
+  currentAppointments = [];
+  renderedClientSlots = [];
+  selectedClientSlotId = '';
+
   signedOutPanel?.removeAttribute('hidden');
   authPanel?.removeAttribute('hidden');
   portalDashboard?.setAttribute('hidden', '');
   logoutBtn?.setAttribute('hidden', '');
   renderEmptyInvoices();
+  renderEmptyBookings();
+  clearBookingMessage();
 }
 
 function showSignedIn(user) {
+  currentUser = user;
   signedOutPanel?.setAttribute('hidden', '');
   authPanel?.removeAttribute('hidden');
   portalDashboard?.removeAttribute('hidden');
@@ -340,7 +692,11 @@ function showSignedIn(user) {
 
   if (currentClientEmail) currentClientEmail.textContent = user.email || 'Signed in client';
   if (currentClientName) {
-    currentClientName.textContent = user.displayName || 'Client account';
+    currentClientName.textContent = currentClientProfile?.displayName || user.displayName || 'Client account';
+  }
+
+  if (bookingPhoneNumber) {
+    bookingPhoneNumber.value = currentClientProfile?.phoneNumber || '';
   }
 }
 
@@ -389,7 +745,17 @@ async function handleSignupSubmit(event) {
     }
 
     await createClientProfile(credential.user, formData);
-    setPortalMessage('Account created. The new client can now log in and see invoices posted to their record.', 'success');
+
+    try {
+      await sendNewAccountNotification(credential.user, formData);
+    } catch (notificationError) {
+      console.error(notificationError);
+    }
+
+    setPortalMessage(
+      'Account created. The new client can now log in, book meetings, and see invoices posted to their record.',
+      'success'
+    );
     form.reset();
   } catch (error) {
     console.error(error);
@@ -404,9 +770,7 @@ async function handlePasswordReset() {
 
   const loginEmailInput = document.getElementById('loginEmail');
   const signupEmailInput = document.getElementById('signupEmail');
-  const emailValue = String(
-    loginEmailInput?.value || signupEmailInput?.value || ''
-  ).trim();
+  const emailValue = String(loginEmailInput?.value || signupEmailInput?.value || '').trim();
 
   if (!emailValue) {
     setPortalMessage('Enter the client email address first, then use reset password.', 'warning');
@@ -422,6 +786,188 @@ async function handlePasswordReset() {
   }
 }
 
+async function handleBookingSubmit(event) {
+  event.preventDefault();
+  if (!db || !currentUser || !bookingForm) return;
+
+  const slot = renderedClientSlots.find((item) => item.slotId === selectedClientSlotId);
+  if (!slot) {
+    setBookingMessage('Choose an open one-hour slot before booking your client meeting.', 'warning');
+    return;
+  }
+
+  const blockedBlockIds = getBlockedBlockIds();
+  if (slot.blockIds.some((blockId) => blockedBlockIds.has(blockId))) {
+    setBookingMessage('That client meeting slot is no longer available. Choose another open time.', 'warning');
+    await loadBookings(currentUser);
+    return;
+  }
+
+  const notes = String(bookingNotes?.value || '').trim();
+  const meetingType = String(bookingMeetingType?.value || 'Client Session').trim();
+  const clientName = String(currentClientProfile?.displayName || currentUser.displayName || 'Client').trim();
+  const companyName = String(currentClientProfile?.companyName || '').trim();
+  const clientEmail = String(currentUser.email || '').trim();
+  const phoneNumber = String(bookingPhoneNumber?.value || currentClientProfile?.phoneNumber || '').trim();
+  const appointmentId = `${currentUser.uid}-${slot.slotId}`;
+  const appointmentRef = doc(db, 'clients', currentUser.uid, 'appointments', appointmentId);
+  const profileRef = doc(db, 'clients', currentUser.uid);
+
+  setButtonsDisabled(bookingForm, true);
+  clearBookingMessage();
+
+  try {
+    await runTransaction(db, async (transaction) => {
+      const blockRefs = slot.blockIds.map((blockId) => doc(db, 'bookingBlocks', blockId));
+      const blockSnapshots = await Promise.all(blockRefs.map((blockRef) => transaction.get(blockRef)));
+
+      if (blockSnapshots.some((snapshot) => snapshot.exists())) {
+        throw new Error('SLOT_TAKEN');
+      }
+
+      blockRefs.forEach((blockRef, index) => {
+        const block = slot.blocks[index];
+        transaction.set(blockRef, {
+          blockId: slot.blockIds[index],
+          bookingId: appointmentId,
+          ownerKind: 'client',
+          ownerUid: currentUser.uid,
+          durationMinutes: 60,
+          meetingType,
+          dateKey: slot.dateKey,
+          dayLabel: slot.dayLabel,
+          startAt: block.startAt,
+          endAt: block.endAt,
+          status: 'booked',
+          createdAt: serverTimestamp()
+        });
+      });
+
+      transaction.set(appointmentRef, {
+        appointmentId,
+        uid: currentUser.uid,
+        clientEmail,
+        clientName,
+        companyName,
+        phoneNumber,
+        meetingType,
+        dateKey: slot.dateKey,
+        dayLabel: slot.dayLabel,
+        timeLabel: slot.timeLabel,
+        startAt: slot.startAt,
+        endAt: slot.endAt,
+        blockIds: slot.blockIds,
+        status: 'booked',
+        notes,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      });
+
+      transaction.set(
+        profileRef,
+        {
+          phoneNumber,
+          updatedAt: serverTimestamp()
+        },
+        { merge: true }
+      );
+    });
+
+    const appointment = {
+      appointmentId,
+      uid: currentUser.uid,
+      clientEmail,
+      clientName,
+      companyName,
+      phoneNumber,
+      meetingType,
+      dateKey: slot.dateKey,
+      dayLabel: slot.dayLabel,
+      timeLabel: slot.timeLabel,
+      startAt: slot.startAt,
+      endAt: slot.endAt,
+      blockIds: slot.blockIds,
+      status: 'booked',
+      notes
+    };
+
+    try {
+      await sendBookingNotification('booked', appointment);
+    } catch (notificationError) {
+      console.error(notificationError);
+    }
+
+    if (bookingNotes) bookingNotes.value = '';
+    selectedClientSlotId = '';
+    setBookingMessage(`Client meeting booked for ${slot.dayLabel} at ${slot.timeLabel}.`, 'success');
+    await loadBookings(currentUser);
+  } catch (error) {
+    console.error(error);
+    if (error?.message === 'SLOT_TAKEN') {
+      setBookingMessage('That time was just booked. Choose another open slot.', 'warning');
+      await loadBookings(currentUser);
+    } else {
+      setBookingMessage('We could not complete the booking right now. Please try again.', 'warning');
+    }
+  } finally {
+    setButtonsDisabled(bookingForm, false);
+    updateSelectedBookingMeta();
+  }
+}
+
+async function handleBookingCancel(appointmentId) {
+  if (!db || !currentUser || !appointmentId) return;
+
+  const appointment = currentAppointments.find((item) => (item.appointmentId || item.id) === appointmentId);
+  if (!appointment) {
+    setBookingMessage('We could not find that appointment record anymore.', 'warning');
+    return;
+  }
+
+  const batch = writeBatch(db);
+  const blockIds = Array.isArray(appointment.blockIds) ? appointment.blockIds : [];
+
+  blockIds.forEach((blockId) => {
+    batch.delete(doc(db, 'bookingBlocks', blockId));
+  });
+
+  batch.set(
+    doc(db, 'clients', currentUser.uid, 'appointments', appointmentId),
+    {
+      status: 'cancelled',
+      cancelledAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    },
+    { merge: true }
+  );
+
+  clearBookingMessage();
+
+  try {
+    await batch.commit();
+
+    try {
+      await sendBookingNotification('cancelled', {
+        ...appointment,
+        status: 'cancelled'
+      });
+    } catch (notificationError) {
+      console.error(notificationError);
+    }
+
+    setBookingMessage(
+      `Appointment canceled for ${appointment.dayLabel || formatDate(appointment.startAt)} at ${appointment.timeLabel || formatTimeLabel(
+        appointment.startAt
+      )}.`,
+      'success'
+    );
+    await loadBookings(currentUser);
+  } catch (error) {
+    console.error(error);
+    setBookingMessage('We could not cancel that appointment right now. Please try again.', 'warning');
+  }
+}
+
 function initializePortal() {
   authTabs.forEach((tab) => {
     tab.addEventListener('click', () => {
@@ -432,11 +978,31 @@ function initializePortal() {
   loginForm?.addEventListener('submit', handleLoginSubmit);
   signupForm?.addEventListener('submit', handleSignupSubmit);
   logoutBtn?.addEventListener('click', () => {
-    if (auth) {
-      signOut(auth);
-    }
+    if (auth) signOut(auth);
   });
   forgotPasswordBtn?.addEventListener('click', handlePasswordReset);
+
+  bookingDateSelect?.addEventListener('change', () => {
+    clearBookingMessage();
+    selectedClientSlotId = '';
+    renderClientSlots();
+  });
+
+  bookingMeetingType?.addEventListener('change', updateSelectedBookingMeta);
+
+  bookingSlotGrid?.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-slot-id]');
+    if (!button) return;
+    selectedClientSlotId = button.getAttribute('data-slot-id') || '';
+    renderClientSlots();
+  });
+
+  bookingForm?.addEventListener('submit', handleBookingSubmit);
+  bookingList?.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-cancel-booking]');
+    if (!button) return;
+    handleBookingCancel(button.getAttribute('data-cancel-booking') || '');
+  });
 
   setAuthMode(activeMode);
   showSignedOut();
@@ -448,6 +1014,7 @@ function initializePortal() {
     portalDashboard?.removeAttribute('hidden');
     logoutBtn?.setAttribute('hidden', '');
     renderEmptyInvoices();
+    renderEmptyBookings();
     if (invoiceUpdatedAt) {
       invoiceUpdatedAt.textContent = 'Firebase setup required before clients can log in.';
     }
@@ -466,8 +1033,9 @@ function initializePortal() {
       return;
     }
 
+    await loadClientProfile(user);
     showSignedIn(user);
-    await loadInvoices(user);
+    await Promise.all([loadInvoices(user), loadBookings(user)]);
   });
 }
 
