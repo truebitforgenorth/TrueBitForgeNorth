@@ -86,7 +86,7 @@ function updateConsultationSelectionMeta() {
 
   const slot = renderedConsultationSlots.find((item) => item.blockId === selectedConsultationBlockId);
   if (!slot) {
-    consultationSelectionMeta.textContent = 'Choose a date and time to reserve your consultation.';
+    consultationSelectionMeta.textContent = 'Choose a date and time to reserve your phone consultation.';
     consultationSubmitBtn.disabled = true;
     return;
   }
@@ -360,8 +360,6 @@ async function initializeConsultationBooking() {
     selectedConsultationBlockId = '';
     renderConsultationSlots();
   });
-
-  consultationType?.addEventListener('change', updateConsultationSelectionMeta);
 
   consultationTime?.addEventListener('change', () => {
     selectedConsultationBlockId = consultationTime.value || '';

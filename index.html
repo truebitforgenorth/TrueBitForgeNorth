@@ -71,7 +71,7 @@
       <a class="navbar-brand d-flex align-items-center gap-3 text-white" href="index.html#home"
         aria-label="TrueBit Forge North home">
         <span class="brand-badge">
-          <img style="border-radius: 25%;" src="photos/TBFN2.png" alt="TrueBit Forge North LLC logo" class="navbar-logo">
+          <img src="photos/TBFN2.png" alt="TrueBit Forge North LLC logo" class="navbar-logo">
         </span>
         <span class="brand-text">
           <span class="brand-title">TrueBit Forge North</span>
@@ -90,17 +90,17 @@
 
       <div class="collapse navbar-collapse mobile-nav-panel" id="mainNav">
         <ul class="navbar-nav page-nav-list">
-          <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
-          <li class="nav-item"><a class="nav-link" href="portfolio.html">Portfolio</a></li>
-          <li class="nav-item"><a class="nav-link" href="client-portal.html">Client Portal</a></li>
+          <li class="nav-item"><a class="nav-link" data-page-link="home" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" data-page-link="services" href="services.html">Services</a></li>
+          <li class="nav-item"><a class="nav-link" data-page-link="portfolio" href="portfolio.html">Portfolio</a></li>
+          <li class="nav-item"><a class="nav-link" data-page-link="portal" href="client-portal.html">Client Portal</a></li>
         </ul>
       </div>
     </div>
   </nav>
 
   <main>
-    <section class="hero" id="home">
+    <section class="hero page-hero" id="home">
       <div class="container">
         <div class="row align-items-center g-5">
           <div class="col-lg-7 hero-content">
@@ -384,14 +384,14 @@
           <div class="col-lg-5 reveal">
             <div class="contact-card glass h-100">
               <div class="eyebrow">Book A Consultation</div>
-              <h2 class="section-title mb-3">Reserve a 15-minute consultation before you reach out.</h2>
+              <h2 class="section-title mb-3">Reserve a 15-minute phone consultation before you reach out.</h2>
               <p class="mb-4">
-                Book a short consultation call, video chat, or in-person intro session right here and choose the time that works best for you.
+                Book a short phone call right here and choose the time that works best for you.
               </p>
               <ul class="contact-list consultation-summary-list">
                 <li><i class="bi bi-clock-history"></i><span><strong>Length:</strong> 15-minute consultation windows</span></li>
                 <li><i class="bi bi-calendar3"></i><span><strong>Hours:</strong> Monday-Friday 12:00 PM-6:00 PM, Saturday 3:00 PM-6:00 PM</span></li>
-                <li><i class="bi bi-telephone"></i><span><strong>Types:</strong> Phone, video, or in-person consultation</span></li>
+                <li><i class="bi bi-telephone"></i><span><strong>Type:</strong> Phone call only</span></li>
               </ul>
               <p class="consultation-summary-note mt-4 mb-0">
                 Existing clients should use the <a href="client-portal.html" class="footer-link">client portal</a> for longer meeting bookings.
@@ -435,12 +435,9 @@
                 </div>
 
                 <div class="col-md-6">
-                  <label class="form-label text-white-50" for="consultationType">Consultation Type</label>
-                  <select id="consultationType" name="consultationType" class="form-select" required>
-                    <option value="Phone Call" selected>Phone Call</option>
-                    <option value="Video Call">Video Call</option>
-                    <option value="In-Person Meeting">In-Person Meeting</option>
-                  </select>
+                  <label class="form-label text-white-50" for="consultationTypeDisplay">Consultation Type</label>
+                  <input id="consultationTypeDisplay" type="text" class="form-control" value="Phone Call Only" readonly>
+                  <input id="consultationType" name="consultationType" type="hidden" value="Phone Call">
                 </div>
 
                 <div class="col-md-6">
@@ -461,7 +458,7 @@
 
                 <div class="col-12 d-flex flex-column flex-md-row gap-3 align-items-md-center justify-content-between mt-2">
                   <p id="consultationSelectionMeta" class="small text-white-50 mb-0">
-                    Choose a date and time to reserve your consultation.
+                    Choose a date and time to reserve your phone consultation.
                   </p>
                   <button id="consultationSubmitBtn" type="submit" class="btn btn-brand" disabled>Book Consultation</button>
                 </div>

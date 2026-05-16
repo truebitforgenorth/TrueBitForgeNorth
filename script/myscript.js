@@ -1,4 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const currentPage = document.body?.dataset.page || '';
+  const pageNavLinks = document.querySelectorAll('[data-page-link]');
+
+  pageNavLinks.forEach((link) => {
+    const isActive = link.dataset.pageLink === currentPage;
+    link.classList.toggle('active', isActive);
+
+    if (isActive) {
+      link.setAttribute('aria-current', 'page');
+    } else {
+      link.removeAttribute('aria-current');
+    }
+  });
+
   const revealItems = document.querySelectorAll('.reveal');
 
   if ('IntersectionObserver' in window) {
@@ -187,92 +201,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   updateActiveSectionLink();
   window.addEventListener('scroll', updateActiveSectionLink);
-
-  const galleries = document.querySelectorAll('[data-gallery]');
-
-  galleries.forEach((gallery) => {
-    const viewport = gallery.querySelector('.gfg-gallery-viewport');
-    const track = gallery.querySelector('.gfg-gallery-track');
-    const slides = Array.from(gallery.querySelectorAll('.gfg-gallery-item'));
-    const prevButton = gallery.querySelector('[data-gallery-prev]');
-    const nextButton = gallery.querySelector('[data-gallery-next]');
-    const status = gallery.querySelector('[data-gallery-status]');
-
-    if (!viewport || !track || !slides.length) return;
-
-    let currentIndex = 0;
-    let touchStartX = 0;
-    let touchStartY = 0;
-
-    const updateGallery = () => {
-      track.style.transform = `translateX(-${currentIndex * 100}%)`;
-
-      if (prevButton) prevButton.disabled = currentIndex === 0;
-      if (nextButton) nextButton.disabled = currentIndex === slides.length - 1;
-
-      if (status) {
-        const title =
-          slides[currentIndex].querySelector('.gfg-gallery-title')?.textContent?.trim() ||
-          `Screen ${currentIndex + 1}`;
-        status.textContent = `${currentIndex + 1} / ${slides.length} - ${title}`;
-      }
-    };
-
-    const goToSlide = (nextIndex) => {
-      const boundedIndex = Math.max(0, Math.min(nextIndex, slides.length - 1));
-      if (boundedIndex === currentIndex) return;
-
-      currentIndex = boundedIndex;
-      updateGallery();
-      slides[currentIndex].querySelector('.gfg-gallery-scroll')?.scrollTo({ top: 0, behavior: 'smooth' });
-      viewport.focus({ preventScroll: true });
-    };
-
-    prevButton?.addEventListener('click', () => goToSlide(currentIndex - 1));
-    nextButton?.addEventListener('click', () => goToSlide(currentIndex + 1));
-
-    viewport.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowLeft') {
-        event.preventDefault();
-        goToSlide(currentIndex - 1);
-      }
-
-      if (event.key === 'ArrowRight') {
-        event.preventDefault();
-        goToSlide(currentIndex + 1);
-      }
-    });
-
-    viewport.addEventListener(
-      'touchstart',
-      (event) => {
-        const touch = event.changedTouches[0];
-        if (!touch) return;
-        touchStartX = touch.clientX;
-        touchStartY = touch.clientY;
-      },
-      { passive: true }
-    );
-
-    viewport.addEventListener(
-      'touchend',
-      (event) => {
-        const touch = event.changedTouches[0];
-        if (!touch) return;
-
-        const deltaX = touch.clientX - touchStartX;
-        const deltaY = touch.clientY - touchStartY;
-
-        if (Math.abs(deltaX) < 45 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.2) return;
-
-        if (deltaX < 0) goToSlide(currentIndex + 1);
-        if (deltaX > 0) goToSlide(currentIndex - 1);
-      },
-      { passive: true }
-    );
-
-    updateGallery();
-  });
 
   syncMobileMenuState(true);
 });
