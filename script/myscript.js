@@ -63,6 +63,135 @@ document.addEventListener('DOMContentLoaded', () => {
     counters.forEach((counter) => counterObserver.observe(counter));
   }
 
+  const tiltScenes = document.querySelectorAll('[data-tilt-scene]');
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const finePointerQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+  tiltScenes.forEach((scene) => {
+    const object = scene.querySelector('[data-tilt-object]');
+    const halo = scene.querySelector('.interactive-stage__ring--halo');
+    const orbit = scene.querySelector('.interactive-stage__ring--orbit');
+    const outer = scene.querySelector('.interactive-stage__ring--outer');
+    const inner = scene.querySelector('.interactive-stage__ring--inner');
+    const core = scene.querySelector('.interactive-stage__ring--core');
+    const shadow = scene.querySelector('.interactive-stage__shadow');
+
+    if (!object || !halo || !orbit || !outer || !inner || !core || !shadow) return;
+
+    const state = {
+      currentX: 0,
+      currentY: 0,
+      targetX: 0,
+      targetY: 0,
+      frame: null
+    };
+
+    const shouldAnimate = () => finePointerQuery.matches && !reducedMotionQuery.matches;
+
+    function applyTransforms(xValue, yValue) {
+      const objectX = xValue * 24;
+      const objectY = yValue * 16;
+      const rotateY = xValue * 22;
+      const rotateX = yValue * -18;
+      const rotateZ = xValue * 10 - 6;
+      const haloRotation = xValue * 14 + yValue * 8;
+      const haloScale = 1 + Math.abs(yValue) * 0.02;
+      const orbitRotation = xValue * 68 - yValue * 14;
+      const orbitScale = 1 + Math.abs(xValue) * 0.035;
+      const outerRotation = xValue * 50 + yValue * -10;
+      const innerRotation = yValue * -36 + xValue * 10;
+      const innerScale = 1 + Math.abs(yValue) * 0.025;
+      const coreRotation = xValue * -24 + yValue * 18;
+      const shadowX = xValue * 9;
+      const shadowY = yValue * 6;
+      const shadowScale = 1 + Math.abs(xValue) * 0.055 + Math.abs(yValue) * 0.025;
+
+      object.style.transform =
+        `translate(-50%, -50%) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg) translate3d(${objectX}px, ${objectY}px, 0)`;
+      object.style.boxShadow =
+        `${-xValue * 12}px ${26 + Math.abs(yValue) * 14}px 58px rgba(0, 0, 0, 0.38), 0 12px 34px rgba(255, 122, 26, 0.2), 0 0 38px rgba(47, 125, 79, 0.1)`;
+
+      halo.style.transform = `translate(-50%, -50%) rotate(${haloRotation}deg) scale(${haloScale})`;
+      orbit.style.transform = `translate(-50%, -50%) rotate(${orbitRotation}deg) scale(${orbitScale})`;
+      outer.style.transform = `translate(-50%, -50%) rotate(${outerRotation}deg)`;
+      inner.style.transform = `translate(-50%, -50%) rotate(${innerRotation}deg) scale(${innerScale})`;
+      core.style.transform = `translate(-50%, -50%) rotate(${coreRotation}deg)`;
+      shadow.style.transform =
+        `translate(-50%, -50%) translate3d(${shadowX}px, ${shadowY}px, 0) scale(${shadowScale})`;
+    }
+
+    function finishFrame() {
+      if (Math.abs(state.targetX - state.currentX) < 0.002 && Math.abs(state.targetY - state.currentY) < 0.002) {
+        state.currentX = state.targetX;
+        state.currentY = state.targetY;
+        state.frame = null;
+        return;
+      }
+
+      state.frame = window.requestAnimationFrame(renderTilt);
+    }
+
+    function renderTilt() {
+      state.currentX += (state.targetX - state.currentX) * 0.1;
+      state.currentY += (state.targetY - state.currentY) * 0.1;
+
+      applyTransforms(state.currentX, state.currentY);
+
+      finishFrame();
+    }
+
+    function queueRender() {
+      if (!state.frame) {
+        state.frame = window.requestAnimationFrame(renderTilt);
+      }
+    }
+
+    function resetTilt(force = false) {
+      state.targetX = 0;
+      state.targetY = 0;
+
+      if (force || !shouldAnimate()) {
+        state.currentX = 0;
+        state.currentY = 0;
+        if (state.frame) {
+          window.cancelAnimationFrame(state.frame);
+          state.frame = null;
+        }
+        applyTransforms(0, 0);
+        return;
+      }
+
+      queueRender();
+    }
+
+    scene.addEventListener('pointermove', (event) => {
+      if (!shouldAnimate()) return;
+
+      const rect = scene.getBoundingClientRect();
+      const relativeX = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+      const relativeY = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+
+      state.targetX = Math.max(-1, Math.min(1, relativeX));
+      state.targetY = Math.max(-1, Math.min(1, relativeY));
+      queueRender();
+    });
+
+    scene.addEventListener('pointerleave', () => resetTilt());
+    scene.addEventListener('pointercancel', () => resetTilt());
+
+    const syncTiltMode = () => resetTilt(true);
+
+    if (typeof reducedMotionQuery.addEventListener === 'function') {
+      reducedMotionQuery.addEventListener('change', syncTiltMode);
+      finePointerQuery.addEventListener('change', syncTiltMode);
+    } else {
+      reducedMotionQuery.addListener(syncTiltMode);
+      finePointerQuery.addListener(syncTiltMode);
+    }
+
+    resetTilt(true);
+  });
+
   const contactForm = document.getElementById('contactForm');
   const formMessage = document.getElementById('formMessage');
 
