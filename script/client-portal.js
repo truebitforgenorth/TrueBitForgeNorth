@@ -114,6 +114,24 @@ function clearPortalMessage() {
   portalMessageText.textContent = '';
 }
 
+function authErrorMessage(error, fallback = 'Client portal access failed. Please try again.') {
+  const code = error?.code || '';
+
+  const messages = {
+    'auth/invalid-credential': 'Login failed. Double-check the email and password for this client account.',
+    'auth/user-not-found': 'Login failed. No client account was found for that email address.',
+    'auth/wrong-password': 'Login failed. Double-check the password for this client account.',
+    'auth/too-many-requests': 'Too many login attempts. Wait a few minutes, then try again or reset the password.',
+    'auth/network-request-failed': 'Login could not reach Firebase. Check your connection and try again.',
+    'auth/unauthorized-domain': 'This website domain is not authorized for Firebase login yet.',
+    'auth/email-already-in-use': 'An account already exists for that email. Use login or reset the password.',
+    'auth/weak-password': 'Password must be at least 6 characters.',
+    'auth/invalid-email': 'Enter a valid email address.'
+  };
+
+  return messages[code] || fallback;
+}
+
 function setBookingMessage(message, tone = 'info') {
   if (!bookingMessage || !bookingMessageText) return;
 
@@ -711,7 +729,10 @@ function showSignedIn(user) {
 
 async function handleLoginSubmit(event) {
   event.preventDefault();
-  if (!auth) return;
+  if (!auth) {
+    setPortalMessage('Client portal login is still loading. Wait a moment, then try again.', 'warning');
+    return;
+  }
 
   const form = event.currentTarget;
   const formData = new FormData(form);
@@ -727,7 +748,7 @@ async function handleLoginSubmit(event) {
     form.reset();
   } catch (error) {
     console.error(error);
-    setPortalMessage('Login failed. Double-check the email and password for this client account.', 'warning');
+    setPortalMessage(authErrorMessage(error, 'Login failed. Please try again.'), 'warning');
   } finally {
     setButtonsDisabled(form, false);
   }
@@ -735,7 +756,10 @@ async function handleLoginSubmit(event) {
 
 async function handleSignupSubmit(event) {
   event.preventDefault();
-  if (!auth) return;
+  if (!auth) {
+    setPortalMessage('Client portal sign-up is still loading. Wait a moment, then try again.', 'warning');
+    return;
+  }
 
   const form = event.currentTarget;
   const formData = new FormData(form);
@@ -768,14 +792,17 @@ async function handleSignupSubmit(event) {
     form.reset();
   } catch (error) {
     console.error(error);
-    setPortalMessage('Sign-up failed. Please double-check your information and try again.', 'warning');
+    setPortalMessage(authErrorMessage(error, 'Sign-up failed. Please double-check your information and try again.'), 'warning');
   } finally {
     setButtonsDisabled(form, false);
   }
 }
 
 async function handlePasswordReset() {
-  if (!auth) return;
+  if (!auth) {
+    setPortalMessage('Client portal password reset is still loading. Wait a moment, then try again.', 'warning');
+    return;
+  }
 
   const loginEmailInput = document.getElementById('loginEmail');
   const signupEmailInput = document.getElementById('signupEmail');
@@ -791,7 +818,10 @@ async function handlePasswordReset() {
     setPortalMessage('Password reset email sent.', 'success');
   } catch (error) {
     console.error(error);
-    setPortalMessage('We could not send the reset email. Make sure the address belongs to an existing client account.', 'warning');
+    setPortalMessage(
+      authErrorMessage(error, 'We could not send the reset email. Make sure the address belongs to an existing client account.'),
+      'warning'
+    );
   }
 }
 
@@ -1029,10 +1059,20 @@ function initializePortal() {
     return;
   }
 
-  const app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  db = getFirestore(app);
-  setupNotice?.setAttribute('hidden', '');
+  try {
+    const app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app);
+    setupNotice?.setAttribute('hidden', '');
+  } catch (error) {
+    console.error(error);
+    setPortalActionState('unavailable');
+    setupNotice?.removeAttribute('hidden');
+    authPanel?.setAttribute('hidden', '');
+    signedOutPanel?.setAttribute('hidden', '');
+    setPortalMessage('Client portal could not start. Please refresh and try again.', 'warning');
+    return;
+  }
 
   onAuthStateChanged(auth, async (user) => {
     if (!user) {
@@ -1041,8 +1081,16 @@ function initializePortal() {
       return;
     }
 
-    await loadClientProfile(user);
     showSignedIn(user);
+
+    try {
+      await loadClientProfile(user);
+      showSignedIn(user);
+    } catch (error) {
+      console.error(error);
+      setPortalMessage('Signed in, but we could not load the client profile yet.', 'warning');
+    }
+
     await Promise.all([loadInvoices(user), loadBookings(user)]);
   });
 }

@@ -83,28 +83,36 @@ document.addEventListener('DOMContentLoaded', () => {
       currentY: 0,
       targetX: 0,
       targetY: 0,
+      pointerX: 0,
+      pointerY: 0,
+      scrollX: 0,
+      scrollY: 0,
+      isTouching: false,
       frame: null
     };
 
-    const shouldAnimate = () => finePointerQuery.matches && !reducedMotionQuery.matches;
+    const clampMotion = (value) => Math.max(-1, Math.min(1, value));
+    const shouldAnimate = () => !reducedMotionQuery.matches;
 
     function applyTransforms(xValue, yValue) {
-      const objectX = xValue * 24;
-      const objectY = yValue * 16;
-      const rotateY = xValue * 22;
-      const rotateX = yValue * -18;
-      const rotateZ = xValue * 10 - 6;
-      const haloRotation = xValue * 14 + yValue * 8;
-      const haloScale = 1 + Math.abs(yValue) * 0.02;
-      const orbitRotation = xValue * 68 - yValue * 14;
-      const orbitScale = 1 + Math.abs(xValue) * 0.035;
-      const outerRotation = xValue * 50 + yValue * -10;
-      const innerRotation = yValue * -36 + xValue * 10;
-      const innerScale = 1 + Math.abs(yValue) * 0.025;
-      const coreRotation = xValue * -24 + yValue * 18;
-      const shadowX = xValue * 9;
-      const shadowY = yValue * 6;
-      const shadowScale = 1 + Math.abs(xValue) * 0.055 + Math.abs(yValue) * 0.025;
+      const isDesktopMotion = finePointerQuery.matches;
+      const motionScale = isDesktopMotion ? 1.55 : 1;
+      const objectX = xValue * 24 * motionScale;
+      const objectY = yValue * 16 * motionScale;
+      const rotateY = xValue * 22 * motionScale;
+      const rotateX = yValue * -18 * motionScale;
+      const rotateZ = xValue * 10 * motionScale - 6;
+      const haloRotation = (xValue * 14 + yValue * 8) * motionScale;
+      const haloScale = 1 + Math.abs(yValue) * (isDesktopMotion ? 0.04 : 0.02);
+      const orbitRotation = (xValue * 68 - yValue * 14) * motionScale;
+      const orbitScale = 1 + Math.abs(xValue) * (isDesktopMotion ? 0.06 : 0.035);
+      const outerRotation = (xValue * 50 + yValue * -10) * motionScale;
+      const innerRotation = (yValue * -36 + xValue * 10) * motionScale;
+      const innerScale = 1 + Math.abs(yValue) * (isDesktopMotion ? 0.045 : 0.025);
+      const coreRotation = (xValue * -24 + yValue * 18) * motionScale;
+      const shadowX = xValue * 9 * motionScale;
+      const shadowY = yValue * 6 * motionScale;
+      const shadowScale = 1 + Math.abs(xValue) * (isDesktopMotion ? 0.09 : 0.055) + Math.abs(yValue) * (isDesktopMotion ? 0.04 : 0.025);
 
       object.style.transform =
         `translate(-50%, -50%) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg) translate3d(${objectX}px, ${objectY}px, 0)`;
@@ -146,11 +154,24 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    function syncTargets() {
+      state.targetX = clampMotion(state.pointerX + state.scrollX);
+      state.targetY = clampMotion(state.pointerY + state.scrollY);
+      queueRender();
+    }
+
     function resetTilt(force = false) {
-      state.targetX = 0;
-      state.targetY = 0;
+      state.pointerX = 0;
+      state.pointerY = 0;
+
+      if (force) {
+        state.scrollX = 0;
+        state.scrollY = 0;
+      }
 
       if (force || !shouldAnimate()) {
+        state.targetX = 0;
+        state.targetY = 0;
         state.currentX = 0;
         state.currentY = 0;
         if (state.frame) {
@@ -161,25 +182,89 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      queueRender();
+      syncTargets();
     }
 
-    scene.addEventListener('pointermove', (event) => {
+    function updatePointerTilt(event, strength = 1) {
       if (!shouldAnimate()) return;
 
-      const rect = scene.getBoundingClientRect();
-      const relativeX = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
-      const relativeY = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+      const relativeX = finePointerQuery.matches
+        ? ((event.clientX / window.innerWidth) - 0.5) * 2
+        : ((event.clientX - scene.getBoundingClientRect().left) / scene.getBoundingClientRect().width - 0.5) * 2;
+      const relativeY = finePointerQuery.matches
+        ? ((event.clientY / window.innerHeight) - 0.5) * 2
+        : ((event.clientY - scene.getBoundingClientRect().top) / scene.getBoundingClientRect().height - 0.5) * 2;
 
-      state.targetX = Math.max(-1, Math.min(1, relativeX));
-      state.targetY = Math.max(-1, Math.min(1, relativeY));
-      queueRender();
+      state.pointerX = clampMotion(relativeX * strength);
+      state.pointerY = clampMotion(relativeY * strength);
+      syncTargets();
+    }
+
+    function updateScrollTilt() {
+      if (!shouldAnimate()) return;
+      if (finePointerQuery.matches) {
+        state.scrollX = 0;
+        state.scrollY = 0;
+        syncTargets();
+        return;
+      }
+
+      const rect = scene.getBoundingClientRect();
+      const viewportCenter = window.innerHeight / 2;
+      const sceneCenter = rect.top + rect.height / 2;
+      const scrollProgress = clampMotion((viewportCenter - sceneCenter) / (window.innerHeight * 0.7));
+
+      state.scrollX = scrollProgress * 0.24;
+      state.scrollY = scrollProgress * 0.46;
+      syncTargets();
+    }
+
+    object.addEventListener('pointerdown', (event) => {
+      if (!shouldAnimate()) return;
+
+      state.isTouching = true;
+      object.setPointerCapture?.(event.pointerId);
+      updatePointerTilt(event, 1.25);
+      event.preventDefault();
     });
 
-    scene.addEventListener('pointerleave', () => resetTilt());
-    scene.addEventListener('pointercancel', () => resetTilt());
+    function updateViewportPointer(event) {
+      if (!shouldAnimate() || !finePointerQuery.matches || state.isTouching) return;
 
-    const syncTiltMode = () => resetTilt(true);
+      updatePointerTilt(event, 1.15);
+    }
+
+    window.addEventListener('pointermove', updateViewportPointer, { passive: true });
+
+    object.addEventListener('pointermove', (event) => {
+      if (!shouldAnimate()) return;
+
+      if (state.isTouching) {
+        updatePointerTilt(event, 1.25);
+      }
+    });
+
+    object.addEventListener('pointerup', (event) => {
+      state.isTouching = false;
+      object.releasePointerCapture?.(event.pointerId);
+      resetTilt();
+    });
+
+    object.addEventListener('pointerleave', () => {
+      if (!state.isTouching && finePointerQuery.matches) resetTilt();
+    });
+    object.addEventListener('pointercancel', (event) => {
+      state.isTouching = false;
+      object.releasePointerCapture?.(event.pointerId);
+      resetTilt();
+    });
+    window.addEventListener('scroll', updateScrollTilt, { passive: true });
+    window.addEventListener('resize', updateScrollTilt);
+
+    const syncTiltMode = () => {
+      resetTilt(true);
+      updateScrollTilt();
+    };
 
     if (typeof reducedMotionQuery.addEventListener === 'function') {
       reducedMotionQuery.addEventListener('change', syncTiltMode);
@@ -189,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
       finePointerQuery.addListener(syncTiltMode);
     }
 
-    resetTilt(true);
+    syncTiltMode();
   });
 
   const contactForm = document.getElementById('contactForm');
