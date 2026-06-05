@@ -214,8 +214,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const sceneCenter = rect.top + rect.height / 2;
       const scrollProgress = clampMotion((viewportCenter - sceneCenter) / (window.innerHeight * 0.7));
 
-      state.scrollX = scrollProgress * 0.24;
-      state.scrollY = scrollProgress * 0.46;
+      state.scrollX = scrollProgress * 0.34;
+      state.scrollY = scrollProgress * 0.64;
       syncTargets();
     }
 

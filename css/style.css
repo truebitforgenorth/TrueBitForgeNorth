@@ -2307,9 +2307,7 @@ footer {
   .hero-content,
   .hero-visual,
   .hero-shell,
-  .hero-inline-visual,
-  .interactive-hero,
-  .interactive-stage {
+  .hero-inline-visual {
     max-width: 100%;
     min-width: 0;
   }
