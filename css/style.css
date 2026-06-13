@@ -1897,6 +1897,118 @@ body[data-page="services"] .compact-pricing-card {
   box-shadow: 0 18px 40px rgba(255,122,26,0.34);
 }
 
+.photo-editing-section {
+  background: transparent;
+}
+
+.photo-editing-grid,
+.website-project-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.photo-editing-card,
+.website-project-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.11);
+  border-radius: var(--radius-xl);
+  background:
+    linear-gradient(145deg, rgba(255,122,26,0.11), rgba(255,255,255,0.045) 45%, rgba(47,125,79,0.11)),
+    rgba(255,255,255,0.035);
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.photo-editing-card:hover,
+.website-project-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255,122,26,0.26);
+  box-shadow:
+    0 18px 44px rgba(0,0,0,0.28),
+    0 0 0 1px rgba(255,122,26,0.08);
+}
+
+.photo-editing-card img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+
+.website-project-visual {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 36%, rgba(255,159,63,0.22), transparent 34%),
+    radial-gradient(circle at 74% 78%, rgba(47,125,79,0.18), transparent 32%),
+    linear-gradient(145deg, rgba(255,122,26,0.18), rgba(255,255,255,0.04) 48%, rgba(47,125,79,0.16)),
+    rgba(255,255,255,0.035);
+}
+
+.website-project-visual::before {
+  content: "";
+  position: absolute;
+  inset: 16%;
+  border: 1px solid rgba(255,255,255,0.11);
+  border-radius: 50%;
+  box-shadow: inset 0 0 36px rgba(0,0,0,0.18);
+}
+
+.website-project-visual i {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 45%;
+  aspect-ratio: 1 / 1;
+  border-radius: 26%;
+  color: #fff5eb;
+  font-size: clamp(3.5rem, 8vw, 5.2rem);
+  background:
+    linear-gradient(145deg, rgba(255,122,26,0.92), rgba(255,159,63,0.78)),
+    rgba(255,255,255,0.08);
+  box-shadow:
+    0 18px 44px rgba(0,0,0,0.3),
+    0 0 42px rgba(255,122,26,0.18);
+}
+
+.photo-editing-copy,
+.website-project-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.1rem;
+}
+
+.photo-editing-copy h3,
+.website-project-copy h3 {
+  color: #ffffff;
+  font-size: 1.12rem;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.photo-editing-copy p,
+.website-project-copy p {
+  color: var(--brand-muted);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.website-project-copy .btn {
+  margin-top: auto;
+}
+
 .pricing-card.featured {
   border: 1px solid rgba(255,122,26,0.35);
   backdrop-filter: none;
@@ -2574,13 +2686,14 @@ footer {
     flex: 0 0 100%;
     max-width: 100%;
   }
+
+  .photo-editing-grid,
+  .website-project-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 767.98px) {
-  .section-padding {
-    padding: 70px 0;
-  }
-
   .featured-work-card,
   .project-image,
   .project-window,
@@ -2618,6 +2731,16 @@ footer {
     padding: 0.9rem;
   }
 
+  .photo-editing-grid,
+  .website-project-grid {
+    gap: 1rem;
+  }
+
+  .photo-editing-copy,
+  .website-project-copy {
+    padding: 1rem;
+  }
+
   .window-body .row.g-3 > [class*="col-"] {
     flex: 0 0 100%;
     max-width: 100%;
@@ -2649,6 +2772,11 @@ footer {
 @media (max-width: 575.98px) {
   .navbar-brand {
     font-size: 0.88rem;
+  }
+
+  .photo-editing-grid,
+  .website-project-grid {
+    grid-template-columns: 1fr;
   }
 
   .brand-subtitle {
