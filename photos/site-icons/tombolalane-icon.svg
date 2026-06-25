@@ -1,12 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="TombolaLane logo">
-  <rect width="64" height="64" rx="14" fill="#67d2ff" />
+  <defs>
+    <linearGradient id="tombolaShine" x1="10" y1="8" x2="42" y2="34" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff" stop-opacity="0.86"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="tombolaBlue" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#d9f3ff"/>
+      <stop offset="0.48" stop-color="#67d2ff"/>
+      <stop offset="1" stop-color="#14335a"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#tombolaBlue)" stroke="rgba(103, 210, 255, 0.42)" />
+  <path d="M9 9H55V36C40 21 25 14 9 12V9Z" fill="url(#tombolaShine)"/>
   <text
     x="32"
-    y="40"
+    y="39"
     text-anchor="middle"
     font-family="Arial, sans-serif"
     font-size="22"
-    font-weight="900"
+    font-weight="1000"
     fill="#06111f"
   >TB</text>
 </svg>
