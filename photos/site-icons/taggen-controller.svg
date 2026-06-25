@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">Taggen controller logo</title>
+  <desc id="desc">A red and orange gaming controller logo with TG initials.</desc>
+  <defs>
+    <linearGradient id="shell" x1="20" y1="20" x2="110" y2="112" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#e64235"/>
+      <stop offset=".56" stop-color="#f59b31"/>
+      <stop offset="1" stop-color="#7c1717"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="34" y1="30" x2="90" y2="78" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff3d3" stop-opacity=".82"/>
+      <stop offset=".72" stop-color="#fff3d3" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow" x="-18%" y="-18%" width="136%" height="136%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#e64235" flood-opacity=".36"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#f59b31" flood-opacity=".42"/>
+    </filter>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="#101114"/>
+  <path fill="url(#shell)" filter="url(#glow)" d="M36.8 45.1h54.4c15.3 0 25.8 11.1 27.2 29l1.2 15.5c.8 10-4.2 17.2-12.1 17.2-5.2 0-8.8-2.7-13-8.8l-7.1-10.3H40.6L33.5 98c-4.2 6.1-7.8 8.8-13 8.8-7.9 0-12.9-7.2-12.1-17.2l1.2-15.5c1.4-17.9 11.9-29 27.2-29Z"/>
+  <path fill="url(#shine)" d="M37.6 49.8h51.2c9.5 0 17.1 4.8 21.1 13.8-5.1-3.5-11.4-5.1-19.1-5.1H35.3c-8.1 0-14.1 2.4-18 7.4 3.1-10.4 10.4-16.1 20.3-16.1Z"/>
+  <path fill="#121318" d="M31.7 66.1h8.8v8.5h8.5v8.8h-8.5v8.5h-8.8v-8.5h-8.5v-8.8h8.5v-8.5Zm63.2 2.6a6 6 0 1 1 0 12.1 6 6 0 0 1 0-12.1Zm-15.3 8.8a5.6 5.6 0 1 1 0 11.3 5.6 5.6 0 0 1 0-11.3Z"/>
+  <path fill="#fff3d3" d="M53.6 68.2h19.7c2.5 0 4.5 2 4.5 4.5v13.5c0 2.5-2 4.5-4.5 4.5H53.6c-2.5 0-4.5-2-4.5-4.5V72.7c0-2.5 2-4.5 4.5-4.5Z" opacity=".92"/>
+  <path fill="#15161a" d="M55 73h16.9v4.5h-5.7v8.9h-5.4v-8.9H55V73Zm21.3 0h7c3.8 0 6.4 2.3 6.4 5.9 0 3.7-2.5 6-6.2 6h-1.8v1.5h-5.4V73Zm5.4 4.4v3h1.1c1 0 1.6-.5 1.6-1.5 0-.9-.6-1.5-1.6-1.5h-1.1Z"/>
+  <path fill="none" stroke="#fff3d3" stroke-linecap="round" stroke-width="4" d="M39.7 38.4h48.6" opacity=".7"/>
+</svg>
