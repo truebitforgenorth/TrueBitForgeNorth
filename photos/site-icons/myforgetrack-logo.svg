@@ -1,32 +1,108 @@
-<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="512" height="512" rx="112" fill="#101722"/>
-  <rect x="78" y="72" width="356" height="368" rx="48" fill="#F8FAFC"/>
-  <path d="M78 120C78 93.49 99.49 72 126 72H386C412.51 72 434 93.49 434 120V174H78V120Z" fill="#167C80"/>
-  <rect x="118" y="105" width="126" height="18" rx="9" fill="#F8FAFC"/>
-  <rect x="118" y="135" width="72" height="10" rx="5" fill="#99E1DF"/>
-  <circle cx="382" cy="123" r="24" fill="#E8B44F"/>
-  <path d="M371 123L379 131L394 114" stroke="#101722" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 512 512">
+  <!-- Generator: Adobe Illustrator 30.1.0, SVG Export Plug-In . SVG Version: 2.1.1 Build 136)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #294564;
+      }
 
-  <rect x="112" y="208" width="214" height="58" rx="16" fill="#E7EEF5"/>
-  <rect x="128" y="222" width="32" height="30" rx="8" fill="#2F6FA3"/>
-  <rect x="177" y="224" width="106" height="10" rx="5" fill="#294564"/>
-  <rect x="177" y="242" width="72" height="8" rx="4" fill="#A9B8C8"/>
+      .st1 {
+        fill: #a9b8c8;
+      }
 
-  <rect x="112" y="282" width="214" height="58" rx="16" fill="#E7EEF5"/>
-  <rect x="128" y="296" width="32" height="30" rx="8" fill="#E8B44F"/>
-  <rect x="177" y="298" width="88" height="10" rx="5" fill="#294564"/>
-  <rect x="177" y="316" width="116" height="8" rx="4" fill="#A9B8C8"/>
+      .st2, .st3, .st4, .st5 {
+        stroke: #f8fafc;
+      }
 
-  <rect x="112" y="356" width="214" height="58" rx="16" fill="#E7EEF5"/>
-  <rect x="128" y="370" width="32" height="30" rx="8" fill="#F2708A"/>
-  <rect x="177" y="372" width="112" height="10" rx="5" fill="#294564"/>
-  <rect x="177" y="390" width="62" height="8" rx="4" fill="#A9B8C8"/>
+      .st2, .st3, .st5 {
+        stroke-width: 8px;
+      }
 
-  <path d="M369 218V397" stroke="#B9CBD8" stroke-width="10" stroke-linecap="round"/>
-  <circle cx="369" cy="237" r="19" fill="#2F6FA3" stroke="#F8FAFC" stroke-width="8"/>
-  <circle cx="369" cy="311" r="19" fill="#E8B44F" stroke="#F8FAFC" stroke-width="8"/>
-  <circle cx="369" cy="385" r="19" fill="#167C80" stroke="#F8FAFC" stroke-width="8"/>
-  <path d="M359 385L366 392L380 376" stroke="#F8FAFC" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+      .st2, .st6 {
+        fill: #167c80;
+      }
 
-  <path d="M112 445C153 473 202 488 254 488C318 488 376 466 418 429" stroke="#2F9E9B" stroke-width="18" stroke-linecap="round"/>
+      .st7 {
+        fill: #99e1df;
+      }
+
+      .st8 {
+        fill: #e7eef5;
+      }
+
+      .st9 {
+        fill: #101722;
+      }
+
+      .st3, .st10 {
+        fill: #2f6fa3;
+      }
+
+      .st4 {
+        stroke-width: 7px;
+      }
+
+      .st4, .st11, .st12, .st13 {
+        fill: none;
+        stroke-linecap: round;
+      }
+
+      .st4, .st12 {
+        stroke-linejoin: round;
+      }
+
+      .st11 {
+        stroke: #b9cbd8;
+        stroke-width: 10px;
+      }
+
+      .st12 {
+        stroke: #101722;
+        stroke-width: 9px;
+      }
+
+      .st14 {
+        fill: #f2708a;
+      }
+
+      .st15, .st5 {
+        fill: #e8b44f;
+      }
+
+      .st13 {
+        stroke: #167c80;
+        stroke-width: 18px;
+      }
+
+      .st16 {
+        fill: #f8fafc;
+      }
+    </style>
+  </defs>
+  <rect class="st9" width="512" height="512" rx="112" ry="112"/>
+  <rect class="st16" x="78" y="72" width="356" height="368" rx="48" ry="48"/>
+  <path class="st6" d="M78,120c0-26.51,21.49-48,48-48h260c26.51,0,48,21.49,48,48v54H78v-54Z"/>
+  <path class="st16" d="M127,105h108c4.97,0,9,4.03,9,9h0c0,4.97-4.03,9-9,9h-108c-4.97,0-9-4.03-9-9h0c0-4.97,4.03-9,9-9Z"/>
+  <path class="st7" d="M123,135h62c2.76,0,5,2.24,5,5h0c0,2.76-2.24,5-5,5h-62c-2.76,0-5-2.24-5-5h0c0-2.76,2.24-5,5-5Z"/>
+  <circle class="st15" cx="382" cy="123" r="24"/>
+  <path class="st12" d="M371,123l8,8,15-17"/>
+  <rect class="st8" x="112" y="208" width="214" height="58" rx="16" ry="16"/>
+  <rect class="st10" x="128" y="222" width="32" height="30" rx="8" ry="8"/>
+  <path class="st0" d="M182,224h96c2.76,0,5,2.24,5,5h0c0,2.76-2.24,5-5,5h-96c-2.76,0-5-2.24-5-5h0c0-2.76,2.24-5,5-5Z"/>
+  <path class="st1" d="M181,242h64c2.21,0,4,1.79,4,4h0c0,2.21-1.79,4-4,4h-64c-2.21,0-4-1.79-4-4h0c0-2.21,1.79-4,4-4Z"/>
+  <rect class="st8" x="112" y="282" width="214" height="58" rx="16" ry="16"/>
+  <rect class="st15" x="128" y="296" width="32" height="30" rx="8" ry="8"/>
+  <path class="st0" d="M182,298h78c2.76,0,5,2.24,5,5h0c0,2.76-2.24,5-5,5h-78c-2.76,0-5-2.24-5-5h0c0-2.76,2.24-5,5-5Z"/>
+  <path class="st1" d="M181,316h108c2.21,0,4,1.79,4,4h0c0,2.21-1.79,4-4,4h-108c-2.21,0-4-1.79-4-4h0c0-2.21,1.79-4,4-4Z"/>
+  <rect class="st8" x="112" y="356" width="214" height="58" rx="16" ry="16"/>
+  <rect class="st14" x="128" y="370" width="32" height="30" rx="8" ry="8"/>
+  <path class="st0" d="M182,372h102c2.76,0,5,2.24,5,5h0c0,2.76-2.24,5-5,5h-102c-2.76,0-5-2.24-5-5h0c0-2.76,2.24-5,5-5Z"/>
+  <path class="st1" d="M181,390h54c2.21,0,4,1.79,4,4h0c0,2.21-1.79,4-4,4h-54c-2.21,0-4-1.79-4-4h0c0-2.21,1.79-4,4-4Z"/>
+  <path class="st11" d="M369,218v179"/>
+  <circle class="st3" cx="369" cy="237" r="19"/>
+  <circle class="st5" cx="369" cy="311" r="19"/>
+  <circle class="st2" cx="369" cy="385" r="19"/>
+  <path class="st4" d="M359,385l7,7,14-16"/>
+  <path class="st13" d="M164,382.67c31,29,72,45,114,45,61,0,114-32,144-80"/>
 </svg>

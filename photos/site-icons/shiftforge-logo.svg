@@ -1,17 +1,79 @@
-<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="512" height="512" rx="112" fill="#101722"/>
-  <rect x="82" y="106" width="348" height="316" rx="44" fill="#F8FAFC"/>
-  <rect x="82" y="106" width="348" height="92" rx="44" fill="#2563EB"/>
-  <path d="M82 160C82 130.177 106.177 106 136 106H376C405.823 106 430 130.177 430 160V198H82V160Z" fill="#2563EB"/>
-  <rect x="142" y="70" width="38" height="90" rx="19" fill="#38BDF8"/>
-  <rect x="332" y="70" width="38" height="90" rx="19" fill="#38BDF8"/>
-  <rect x="129" y="244" width="58" height="50" rx="14" fill="#E2E8F0"/>
-  <rect x="227" y="244" width="58" height="50" rx="14" fill="#E2E8F0"/>
-  <rect x="325" y="244" width="58" height="50" rx="14" fill="#E2E8F0"/>
-  <rect x="129" y="326" width="58" height="50" rx="14" fill="#E2E8F0"/>
-  <rect x="227" y="326" width="58" height="50" rx="14" fill="#22C55E"/>
-  <path d="M244 351.5L253.6 361L273 338" stroke="#F8FAFC" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-  <rect x="325" y="326" width="58" height="50" rx="14" fill="#F97316"/>
-  <path d="M149 162H363" stroke="#F8FAFC" stroke-width="16" stroke-linecap="round"/>
-  <path d="M146 403C177 432 218 448 260 448C321 448 374 416 404 368" stroke="#38BDF8" stroke-width="18" stroke-linecap="round"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 512 512">
+  <!-- Generator: Adobe Illustrator 30.1.0, SVG Export Plug-In . SVG Version: 2.1.1 Build 136)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #e2e8f0;
+      }
+
+      .st1 {
+        fill: #38bdf8;
+      }
+
+      .st2 {
+        fill: #101722;
+      }
+
+      .st3 {
+        stroke: #38bdf8;
+        stroke-width: 18.83px;
+      }
+
+      .st3, .st4, .st5 {
+        fill: none;
+        stroke-linecap: round;
+      }
+
+      .st6 {
+        fill: #f97316;
+      }
+
+      .st7 {
+        fill: #2563eb;
+      }
+
+      .st8 {
+        fill: #dee239;
+      }
+
+      .st4 {
+        stroke-linejoin: round;
+        stroke-width: 12.55px;
+      }
+
+      .st4, .st5 {
+        stroke: #f8fafc;
+      }
+
+      .st9 {
+        fill: #22c55e;
+      }
+
+      .st5 {
+        stroke-width: 16.74px;
+      }
+
+      .st10 {
+        fill: #f8fafc;
+      }
+    </style>
+  </defs>
+  <rect class="st2" width="512" height="512" rx="112" ry="112"/>
+  <g>
+    <rect class="st10" x="76.5" y="94.18" width="359" height="335.12" rx="46.02" ry="46.02"/>
+    <rect class="st7" x="76.5" y="94.18" width="359" height="97.57" rx="46.02" ry="46.02"/>
+    <path class="st7" d="M76.5,151.45c0-31.63,24.94-57.27,55.71-57.27h247.59c30.77,0,55.71,25.64,55.71,57.27v40.3H76.5v-40.3Z"/>
+    <path class="st1" d="M158,56h0c10.83,0,19.6,9.02,19.6,20.15v55.15c0,11.13-8.78,20.15-19.6,20.15h0c-10.83,0-19.6-9.02-19.6-20.15v-55.15c0-11.13,8.78-20.15,19.6-20.15Z"/>
+    <path class="st1" d="M354,56h0c10.83,0,19.6,9.02,19.6,20.15v55.15c0,11.13-8.78,20.15-19.6,20.15h0c-10.83,0-19.6-9.02-19.6-20.15v-55.15c0-11.13,8.78-20.15,19.6-20.15Z"/>
+    <rect class="st8" x="124.99" y="240.53" width="59.83" height="53.03" rx="14.64" ry="14.64"/>
+    <rect class="st0" x="226.08" y="240.53" width="59.83" height="53.03" rx="14.64" ry="14.64"/>
+    <rect class="st0" x="327.18" y="240.53" width="59.83" height="53.03" rx="14.64" ry="14.64"/>
+    <rect class="st0" x="124.99" y="327.49" width="59.83" height="53.03" rx="14.64" ry="14.64"/>
+    <rect class="st9" x="226.08" y="327.49" width="59.83" height="53.03" rx="14.64" ry="14.64"/>
+    <path class="st4" d="M243.62,354.53l9.9,10.07,20.01-24.39"/>
+    <rect class="st6" x="327.18" y="327.49" width="59.83" height="53.03" rx="14.64" ry="14.64"/>
+    <path class="st5" d="M145.62,153.57h220.76"/>
+    <path class="st3" d="M156.97,369.91c31.98,30.75,74.28,47.72,117.6,47.72,62.93,0,117.6-33.94,148.55-84.84"/>
+  </g>
 </svg>
