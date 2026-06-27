@@ -1,0 +1,32 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="112" fill="#101722"/>
+  <rect x="78" y="72" width="356" height="368" rx="48" fill="#F8FAFC"/>
+  <path d="M78 120C78 93.49 99.49 72 126 72H386C412.51 72 434 93.49 434 120V174H78V120Z" fill="#167C80"/>
+  <rect x="118" y="105" width="126" height="18" rx="9" fill="#F8FAFC"/>
+  <rect x="118" y="135" width="72" height="10" rx="5" fill="#99E1DF"/>
+  <circle cx="382" cy="123" r="24" fill="#E8B44F"/>
+  <path d="M371 123L379 131L394 114" stroke="#101722" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="112" y="208" width="214" height="58" rx="16" fill="#E7EEF5"/>
+  <rect x="128" y="222" width="32" height="30" rx="8" fill="#2F6FA3"/>
+  <rect x="177" y="224" width="106" height="10" rx="5" fill="#294564"/>
+  <rect x="177" y="242" width="72" height="8" rx="4" fill="#A9B8C8"/>
+
+  <rect x="112" y="282" width="214" height="58" rx="16" fill="#E7EEF5"/>
+  <rect x="128" y="296" width="32" height="30" rx="8" fill="#E8B44F"/>
+  <rect x="177" y="298" width="88" height="10" rx="5" fill="#294564"/>
+  <rect x="177" y="316" width="116" height="8" rx="4" fill="#A9B8C8"/>
+
+  <rect x="112" y="356" width="214" height="58" rx="16" fill="#E7EEF5"/>
+  <rect x="128" y="370" width="32" height="30" rx="8" fill="#F2708A"/>
+  <rect x="177" y="372" width="112" height="10" rx="5" fill="#294564"/>
+  <rect x="177" y="390" width="62" height="8" rx="4" fill="#A9B8C8"/>
+
+  <path d="M369 218V397" stroke="#B9CBD8" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="369" cy="237" r="19" fill="#2F6FA3" stroke="#F8FAFC" stroke-width="8"/>
+  <circle cx="369" cy="311" r="19" fill="#E8B44F" stroke="#F8FAFC" stroke-width="8"/>
+  <circle cx="369" cy="385" r="19" fill="#167C80" stroke="#F8FAFC" stroke-width="8"/>
+  <path d="M359 385L366 392L380 376" stroke="#F8FAFC" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <path d="M112 445C153 473 202 488 254 488C318 488 376 466 418 429" stroke="#2F9E9B" stroke-width="18" stroke-linecap="round"/>
+</svg>
