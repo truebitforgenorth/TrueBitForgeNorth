@@ -92,11 +92,13 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const clampMotion = (value) => Math.max(-1, Math.min(1, value));
-    const shouldAnimate = () => !reducedMotionQuery.matches;
 
     function applyTransforms(xValue, yValue) {
       const isDesktopMotion = finePointerQuery.matches;
-      const motionScale = isDesktopMotion ? 1.55 : 1;
+      // Keep direct pointer interaction available for reduced-motion users,
+      // but substantially limit the travel and rotation.
+      const accessibilityScale = reducedMotionQuery.matches ? 0.28 : 1;
+      const motionScale = (isDesktopMotion ? 1.55 : 1) * accessibilityScale;
       const objectX = xValue * 24 * motionScale;
       const objectY = yValue * 16 * motionScale;
       const rotateY = xValue * 22 * motionScale;
@@ -169,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
         state.scrollY = 0;
       }
 
-      if (force || !shouldAnimate()) {
+      if (force) {
         state.targetX = 0;
         state.targetY = 0;
         state.currentX = 0;
@@ -186,8 +188,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updatePointerTilt(event, strength = 1) {
-      if (!shouldAnimate()) return;
-
       const relativeX = finePointerQuery.matches
         ? ((event.clientX / window.innerWidth) - 0.5) * 2
         : ((event.clientX - scene.getBoundingClientRect().left) / scene.getBoundingClientRect().width - 0.5) * 2;
@@ -201,7 +201,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateScrollTilt() {
-      if (!shouldAnimate()) return;
+      if (reducedMotionQuery.matches) {
+        state.scrollX = 0;
+        state.scrollY = 0;
+        syncTargets();
+        return;
+      }
+
       if (finePointerQuery.matches) {
         state.scrollX = 0;
         state.scrollY = 0;
@@ -220,8 +226,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     object.addEventListener('pointerdown', (event) => {
-      if (!shouldAnimate()) return;
-
       state.isTouching = true;
       object.setPointerCapture?.(event.pointerId);
       updatePointerTilt(event, 1.25);
@@ -229,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function updateViewportPointer(event) {
-      if (!shouldAnimate() || !finePointerQuery.matches || state.isTouching) return;
+      if (!finePointerQuery.matches || state.isTouching) return;
 
       updatePointerTilt(event, 1.15);
     }
@@ -237,8 +241,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('pointermove', updateViewportPointer, { passive: true });
 
     object.addEventListener('pointermove', (event) => {
-      if (!shouldAnimate()) return;
-
       if (state.isTouching) {
         updatePointerTilt(event, 1.25);
       }
